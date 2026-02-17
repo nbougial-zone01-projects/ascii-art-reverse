@@ -7,17 +7,23 @@
 1.  **Initialize Module**
     *   Run `go mod init ascii-art`.
 
-2.  **Define Shared Types (`types.go`)**
-    *   Create a file `types.go` to hold the shared structs.
+2.  **Create Directory Structure**
+    *   Create the following folders to match the architecture:
+        *   `cmd/ascii-art/`
+        *   `internal/banner/`
+        *   `internal/input/`
+        *   `internal/render/`
+        *   `pkg/model/`
+        *   `test/golden/`
+
+3.  **Define Shared Types (`pkg/model/banner.go`)**
+    *   Create `pkg/model/banner.go`.
+    *   Define `package model`.
     *   Define the Banner structure:
         ```go
         // Banner represents the font map. Key is the rune, Value is the 8 lines of ASCII art.
         type Banner map[rune][]string
         ```
 
-3.  **Define Function Signatures (`main.go` or `interfaces.go`)**
-    *   Create empty functions (stubs) to establish the API contract:
-        *   `func LoadBanner(filename string) (Banner, error)`
-        *   `func ParseInput(args []string) (string, error)`
-        *   `func Render(input string, b Banner) string`
-    *   *Note:* Do not implement the logic yet. Just ensure the code compiles.
+4.  **Verification**
+    *   Run `go build ./...` to ensure the package structure is valid and there are no syntax errors in the struct definition.

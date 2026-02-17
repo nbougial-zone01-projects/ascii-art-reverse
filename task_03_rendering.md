@@ -1,18 +1,18 @@
 # Task 03: Rendering Engine (Developer 3)
 
-**Objective:** Implement the Logic Layer responsible for generating the final ASCII art string using the Banner map.
+**Objective:** Implement the Logic Layer (`internal/render`) responsible for generating the final ASCII art string using the Banner map.
 
 ## TDD Cycle (Red-Green-Refactor)
 
 ### Cycle 1: Single Line Rendering
 1.  **RED (Write Test):**
-    *   Create `render_test.go`.
+    *   Create `internal/render/renderer_test.go`.
     *   Write `TestRender_Simple`.
     *   **Mocking:** Manually construct a `Banner` map in the test (do not rely on `LoadBanner`). Add one character (e.g., 'A') with 8 dummy lines.
     *   Call `Render("A", mockBanner)`.
     *   Assert that the output string matches the 8 dummy lines joined by newlines.
 2.  **GREEN (Write Code):**
-    *   In `render.go`, implement `Render`.
+    *   In `internal/render/renderer.go`, implement `Render`.
     *   Initialize a slice of 8 strings (representing the 8 rows of output).
     *   Loop through the input string. For each character, append its 8 lines to the corresponding 8 rows of the output.
     *   Join the 8 rows with `\n` and return.
@@ -35,6 +35,6 @@
 3.  **REFACTOR:**
     *   Clean up string concatenation (consider using `strings.Builder` for performance).
 
-## Deliverables
-*   `render.go` with fully implemented `Render`.
-*   `render_test.go` with passing tests.
+## Verification
+*   Run `go test ./internal/render/... -v` to confirm all tests pass.
+*   Ensure `Render` accepts `pkg/model.Banner`.

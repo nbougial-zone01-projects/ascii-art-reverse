@@ -174,3 +174,9 @@ The project is considered complete when:
 - Add additional ASCII fonts.
 - Add integration tests.
 
+### 11. Misc.
+When Unsure ask for confirmation
+Use only standard packages
+Do not hallunicate
+Stay strict to what is mentioned in the documentation
+Do not assume things that are not stated

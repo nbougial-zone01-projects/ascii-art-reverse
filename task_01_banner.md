@@ -1,15 +1,15 @@
 # Task 01: Banner Management (Developer 1)
 
-**Objective:** Implement the Data Layer responsible for reading `ascii_library.txt` and parsing it into the `Banner` map.
+**Objective:** Implement the Data Layer (`internal/banner`) responsible for reading `ascii_library.txt` and parsing it into the `model.Banner` map.
 
 ## TDD Cycle (Red-Green-Refactor)
 
 ### Cycle 1: File Loading
 1.  **RED (Write Test):**
-    *   Create `banner_test.go`.
+    *   Create `internal/banner/loader_test.go`.
     *   Write `TestLoadBanner_MissingFile`. Call `LoadBanner("nonexistent.txt")` and assert that it returns an error.
 2.  **GREEN (Write Code):**
-    *   In `banner.go`, implement `LoadBanner` using `os.ReadFile`.
+    *   In `internal/banner/loader.go`, implement `LoadBanner` using `os.ReadFile`.
     *   Return an error if the read fails.
 3.  **REFACTOR:**
     *   Ensure error messages are clear.
@@ -21,7 +21,7 @@
     *   Call `LoadBanner` on this file.
     *   Assert that the returned `Banner` map contains the expected key (e.g., ' ') and that the value is a slice of 8 strings.
 2.  **GREEN (Write Code):**
-    *   Implement the parsing logic in `LoadBanner`.
+    *   Implement the parsing logic in `internal/banner/loader.go`.
     *   **Logic:**
         *   Split the file content by newlines (`\n`).
         *   Iterate through the lines.
@@ -31,6 +31,6 @@
     *   Handle potential Windows line endings (`\r\n`) by sanitizing the input.
     *   Ensure the loop handles the end of the file correctly.
 
-## Deliverables
-*   `banner.go` with fully implemented `LoadBanner`.
-*   `banner_test.go` with passing tests.
+## Verification
+*   Run `go test ./internal/banner/... -v` to confirm all tests pass.
+*   Ensure `LoadBanner` returns `pkg/model.Banner`.

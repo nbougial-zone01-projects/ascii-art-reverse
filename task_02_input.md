@@ -1,16 +1,16 @@
 # Task 02: Input Processing (Developer 2)
 
-**Objective:** Implement the Input Layer responsible for validating CLI arguments and processing escape sequences.
+**Objective:** Implement the Input Layer (`internal/input`) responsible for validating CLI arguments and processing escape sequences.
 
 ## TDD Cycle (Red-Green-Refactor)
 
 ### Cycle 1: Argument Validation
 1.  **RED (Write Test):**
-    *   Create `input_test.go`.
+    *   Create `internal/input/parser_test.go`.
     *   Write `TestParseInput_NoArgs`. Pass an empty slice `[]string{}` to `ParseInput`.
     *   Assert that it returns an error (e.g., "usage: go run . [STRING]").
 2.  **GREEN (Write Code):**
-    *   In `input.go`, implement the check `if len(args) != 1`.
+    *   In `internal/input/parser.go`, implement the check `if len(args) != 1`.
 
 ### Cycle 2: Newline Handling
 1.  **RED (Write Test):**
@@ -31,6 +31,6 @@
 3.  **REFACTOR:**
     *   Optimize the validation loop.
 
-## Deliverables
-*   `input.go` with fully implemented `ParseInput`.
-*   `input_test.go` with passing tests.
+## Verification
+*   Run `go test ./internal/input/... -v` to confirm all tests pass.
+*   Ensure `ParseInput` correctly handles `\n` vs `\\n`.
