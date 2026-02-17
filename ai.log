@@ -29,3 +29,33 @@ Timestamp: 2026-02-17 User Request: "in the ai.log the timestamp does not follow
 AI Assistant Output & Actions:
 
 Log Correction: The assistant updated the timestamps in `ai.log` to reflect the correct date (2026-02-17) as requested.
+Timestamp: 2026-02-17 User Request: "i want to add 2 extra files. one will have the golden tests and one will have the architecture"
+
+AI Assistant Output & Actions:
+
+Documentation Created:
+- `architecture.md`: Created a detailed system architecture document describing the modules (Main, Input, Data, Logic), data flow, and directory structure.
+- `golden_tests.md`: Created a testing strategy document outlining specific test cases (GT-01 to GT-08) and the implementation plan for Golden File testing.
+
+Log Update: Appended this action to `ai.log`.
+Timestamp: 2026-02-17 User Request: "this is false compared to what was discribed" (referring to Directory Structure)
+
+AI Assistant Output & Actions:
+
+Correction: The assistant updated the `Directory Structure` section in `architecture.md` to match the Standard Go Project Layout described in the `Modules` section, replacing the flat structure with the correct nested directory tree.
+
+Log Update: Appended this action to `ai.log`.
+Timestamp: 2026-02-17 User Request: "lets generate the golden tests now. write 10 tests and i will add more on golden_tests.md"
+
+AI Assistant Output & Actions:
+
+Test Generation: The assistant populated `golden_tests.md` with 10 distinct test cases (GT-01 to GT-10), covering lowercase, uppercase, numbers, special characters, newlines, empty strings, and consecutive newlines.
+
+Log Update: Appended this action to `ai.log`.
+Timestamp: 2026-02-17 User Request: "can you fix the format of the directory structure as it is messed up?"
+
+AI Assistant Output & Actions:
+
+Formatting Fix: The assistant corrected the formatting of the `Directory Structure` section in `architecture.md`, which had been corrupted into a single line, restoring it to a readable tree format.
+
+Log Update: Appended this action to `ai.log`.
