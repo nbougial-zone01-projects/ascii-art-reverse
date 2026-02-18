@@ -15,6 +15,7 @@
         *   `internal/render/`
         *   `pkg/model/`
         *   `test/golden/`
+        *   `assets/banners/`
 
 3.  **Define Shared Types (`pkg/model/banner.go`)**
     *   Create `pkg/model/banner.go`.
@@ -27,3 +28,9 @@
 
 4.  **Verification**
     *   Run `go build ./...` to ensure the package structure is valid and there are no syntax errors in the struct definition.
+
+## Acceptance Criteria
+*   [ ] `go.mod` exists and module name is `ascii-art`.
+*   [ ] All directories (`cmd`, `internal`, `pkg`, `test`, `assets`) exist.
+*   [ ] `pkg/model/banner.go` defines `type Banner map[rune][]string`.
+*   [ ] `go build ./...` runs without errors.

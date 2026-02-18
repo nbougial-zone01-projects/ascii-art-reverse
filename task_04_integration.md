@@ -5,7 +5,7 @@
 ## Steps
 
 ### 1. Wire the Application (`cmd/ascii-art/main.go`)
-*   **Action:** Implement `main` to call `input.ParseInput`, `banner.LoadBanner`, and `render.Render`.
+*   **Action:** Implement `main` to call `input.ParseInput`, `banner.LoadBanner` (using `assets/banners/ascii_library.txt`), and `render.Render`.
 *   **Verification:** Run `go run ./cmd/ascii-art "hello"` and visually check output.
 
 ### 2. Generate Golden Files
@@ -36,3 +36,10 @@
 *   `cmd/ascii-art/main.go` (Working entry point).
 *   `test/golden/*.txt` (Verified reference files).
 *   `test/integration_test.go` (Automated regression suite).
+
+## Acceptance Criteria
+*   [ ] `go run ./cmd/ascii-art "hello"` prints the ASCII art to stdout.
+*   [ ] Golden files (`test/golden/*.txt`) exist for all 10 test cases.
+*   [ ] `go test ./test/...` passes, verifying actual output matches golden files.
+*   [ ] The application defaults to `assets/banners/ascii_library.txt`.
+*   [ ] CI check (`go test ./...`) passes for the whole project.

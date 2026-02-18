@@ -34,3 +34,10 @@
 ## Verification
 *   Run `go test ./internal/banner/... -v` to confirm all tests pass.
 *   Ensure `LoadBanner` returns `pkg/model.Banner`.
+
+## Acceptance Criteria
+*   [ ] `LoadBanner` correctly reads a file from disk.
+*   [ ] The returned `Banner` map contains entries for ASCII 32 through 126.
+*   [ ] Each map value (slice of strings) has exactly 8 lines.
+*   [ ] Returns a specific error if the file does not exist or is empty.
+*   [ ] Unit tests cover valid parsing and error conditions.
