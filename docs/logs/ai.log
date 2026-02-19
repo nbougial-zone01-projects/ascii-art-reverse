@@ -377,3 +377,14 @@ Repository Review & Documentation:
   - error handling behavior and default banner path
 
 Log Update: Appended this action to `ai.log`.
+Timestamp: 2026-02-19 User Request: "ok, do it please"
+
+AI Assistant Output & Actions:
+
+Documentation Clarification:
+- Updated `README.md` with a bash-safe special-characters run example using single quotes:
+  - `go run ./cmd/ascii-art '!@#$%^&*()'`
+- Added a note in `README.md` explaining bash history expansion for `!` and why single quotes are recommended.
+- Updated `docs/golden_tests.md` with a bash note for GT-05 to avoid `event not found` errors when generating golden files.
+
+Log Update: Appended this action to `ai.log`.

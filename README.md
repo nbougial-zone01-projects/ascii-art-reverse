@@ -36,6 +36,12 @@ Multiline example:
 go run ./cmd/ascii-art "Hello\nThere"
 ```
 
+Special characters example (bash-safe for `!`):
+
+```bash
+go run ./cmd/ascii-art '!@#$%^&*()'
+```
+
 ## Test
 
 Run all tests:
@@ -60,3 +66,4 @@ The app exits with code `1` and prints an error when:
 
 - Default banner path is fixed to `assets/banners/ascii_library.txt`.
 - If rendering logic changes intentionally, regenerate golden files and rerun `go test ./...`.
+- In interactive `bash`, prefer single quotes when input contains `!` to avoid history expansion errors.

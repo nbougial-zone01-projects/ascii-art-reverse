@@ -22,6 +22,9 @@ The following test cases define the input and the expected behavior.
 
 ## Implementation Plan
 
+> Bash note: for inputs containing `!` (for example GT-05), use single quotes to avoid history expansion errors:
+> `go run ./cmd/ascii-art '!@#$%^&*()'`
+
 1.  **Generate Golden Files:**
     *   Run a verified version of the code.
     *   Redirect output: `go run . "hello" > test/golden/hello.txt`.
