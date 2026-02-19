@@ -321,3 +321,27 @@ Verification Status:
 - Functional validation had already been confirmed by user local execution (`go test ./...` passed).
 
 Log Update: Appended this action to `ai.log`.
+Timestamp: 2026-02-19 User Request: "perfect, now i want you to create a new branch named intergration and start working task_04. Is that clear?"
+
+AI Assistant Output & Actions:
+
+Task 04 Execution (Integration & Golden Tests):
+- Created and switched to branch `intergration`.
+- Implemented `cmd/ascii-art/main.go` wiring:
+  - Added `Run(args []string, stdout io.Writer) error`.
+  - Integrated `input.ParseInput`, `banner.LoadBanner` (default `assets/banners/ascii_library.txt`), and `render.Render`.
+  - Added error handling in `main()` to print readable errors to stderr and exit with code 1.
+- Created `test/integration_test.go` with Golden File tests GT-01 through GT-10.
+- Added command-based test runner using `go run ./cmd/ascii-art <input>` and golden-file comparisons.
+- Fixed integration test execution context/paths:
+  - Set command working directory to repo root (`cmd.Dir = ".."`).
+  - Corrected golden path resolution to `golden/<file>` from the `test` package directory.
+- Generated golden output files in `test/golden/` for all 10 cases:
+  - `hello.txt`, `HELLO.txt`, `mixed_case.txt`, `numbers.txt`, `special_chars.txt`,
+  - `multiline.txt`, `newline_only.txt`, `empty.txt`, `double_newline.txt`, `all_upper.txt`.
+
+Verification:
+- Ran full suite: `go test ./...`.
+- Result: PASS for all packages, including `ascii-art/test` golden integration tests.
+
+Log Update: Appended this action to `ai.log`.
