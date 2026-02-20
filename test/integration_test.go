@@ -33,6 +33,7 @@ func TestGolden(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 
+			// Execute the main program as a subprocess
 			cmd := exec.Command("go", "run", "./cmd/ascii-art", tc.input)
 			cmd.Dir = ".."
 			var stdout bytes.Buffer
@@ -43,12 +44,14 @@ func TestGolden(t *testing.T) {
 				t.Fatalf("command failed: %v, stderr: %s", err, stderr.String())
 			}
 
+			// Read the expected output from the golden file
 			goldenPath := filepath.Join("golden", tc.goldenFile)
 			expected, err := os.ReadFile(goldenPath)
 			if err != nil {
 				t.Fatalf("read golden file %q: %v", goldenPath, err)
 			}
 
+			// Compare actual stdout with the content of the golden file
 			if stdout.String() != string(expected) {
 				t.Fatalf("output mismatch\nexpected:\n%s\nactual:\n%s", string(expected), stdout.String())
 			}

@@ -12,22 +12,27 @@ import (
 const defaultBannerPath = "assets/banners/ascii_library.txt"
 
 // Run wires input parsing, banner loading, and rendering.
+// It writes the result to the provided writer (usually stdout).
 func Run(args []string, stdout io.Writer) error {
+	// 1. Parse and validate input arguments
 	parsed, err := input.ParseInput(args)
 	if err != nil {
 		return err
 	}
 
+	// 2. Load the banner font from the assets directory
 	b, err := banner.LoadBanner(defaultBannerPath)
 	if err != nil {
 		return err
 	}
 
+	// 3. Render the string using the loaded banner and print to output
 	_, err = fmt.Fprint(stdout, render.Render(parsed, b))
 	return err
 }
 
 func main() {
+	// Delegate to Run for better testability and error handling
 	if err := Run(os.Args[1:], os.Stdout); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)

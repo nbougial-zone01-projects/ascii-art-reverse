@@ -388,3 +388,14 @@ Documentation Clarification:
 - Updated `docs/golden_tests.md` with a bash note for GT-05 to avoid `event not found` errors when generating golden files.
 
 Log Update: Appended this action to `ai.log`.
+Timestamp: 2026-02-19 User Request: "add comments to the _test.go files as you ignored them. update ai.log as well"
+
+AI Assistant Output & Actions:
+
+Code Quality Improvement:
+- Added explanatory comments to `internal/input/parser_test.go` to clarify test cases for argument validation and string parsing.
+- Added explanatory comments to `internal/banner/loader_test.go` to clarify test setup, fixture generation, and assertions for banner loading.
+- Added explanatory comments to `internal/render/renderer_test.go` to clarify multi-line rendering expectations.
+- Ensured all test files document the "why" behind each test case.
+
+Log Update: Appended this action to `ai.log`.

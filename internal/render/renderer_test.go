@@ -25,6 +25,7 @@ func TestRender_Simple(t *testing.T) {
 }
 
 func TestRender_MultiLine(t *testing.T) {
+	// Verify that newlines in the input result in vertically stacked ASCII blocks.
 	mockBanner := model.Banner{
 		'A': []string{"A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8"},
 		'B': []string{"B1", "B2", "B3", "B4", "B5", "B6", "B7", "B8"},
