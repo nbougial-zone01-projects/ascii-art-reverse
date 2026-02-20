@@ -30,6 +30,17 @@ CLI tool that converts a single input string into ASCII art using a banner templ
 go run ./cmd/ascii-art "hello"
 ```
 
+Or using `make`:
+
+```bash
+make run ARGS="hello"
+```
+
+To run with the default argument ("Hello"):
+```bash
+make run
+```
+
 Multiline example:
 
 ```bash

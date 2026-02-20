@@ -425,3 +425,24 @@ Final Structure Verification:
 - The project structure adheres to the Standard Go Project Layout and is ready for submission.
 
 Log Update: Appended this action to `ai.log`.
+Timestamp: 2026-02-19 User Request: "can you create Makefile the same way as you did before? you said that you create and then go test ./... and then delete the executable?"
+
+AI Assistant Output & Actions:
+
+Restoration:
+- Recreated the `Makefile` with the standard targets previously discussed:
+  - `build`: Creates the `ascii-art` executable.
+  - `test`: Runs `go test ./...`.
+  - `clean`: Deletes the `ascii-art` executable.
+  - `run` and `run-examples`: Helper targets for execution.
+
+Log Update: Appended this action to `ai.log`.
+Timestamp: 2026-02-19 User Request: "update readme so it contains the make run"
+
+AI Assistant Output & Actions:
+
+Documentation Update:
+- Updated `README.md` to include instructions for using the `make run` command.
+- Documented usage of `make run` (default) and `make run ARGS="..."`.
+
+Log Update: Appended this action to `ai.log`.
