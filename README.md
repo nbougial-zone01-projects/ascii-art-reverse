@@ -41,6 +41,11 @@ To run with the default argument ("Hello"):
 make run
 ```
 
+To run with multiple examples:
+```bash
+make run-examples
+```
+
 Multiline example:
 
 ```bash
