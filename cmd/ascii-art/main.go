@@ -27,7 +27,7 @@ func Run(args []string, stdout io.Writer) error {
 	}
 
 	// 3. Render the string using the loaded banner and print to output
-	_, err = fmt.Fprintln(stdout, render.Render(parsed, b))
+	_, err = fmt.Fprint(stdout, render.Render(parsed, b))
 	return err
 }
 
