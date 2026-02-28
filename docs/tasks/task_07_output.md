@@ -2,21 +2,29 @@
 
 **Objective:** Implement file writing capability in the main application controller.
 
-## Steps
+## TDD Cycle (Red-Green-Refactor)
 
-1.  **Implement File Writer (`cmd/ascii-art/file_writer.go`)**
-    *   Create `cmd/ascii-art/file_writer.go`.
-    *   Implement a function `WriteOutput(filename string, content string) error`.
-    *   Logic: Create/Truncate file and write content.
-
-2.  **Unit Tests (`cmd/ascii-art/file_writer_test.go`)**
+### Cycle 1: File Writer
+1.  **RED (Write Test):**
     *   Create `cmd/ascii-art/file_writer_test.go`.
-    *   Test file creation and content writing (use temporary files).
+    *   Write `TestWriteOutput`.
+    *   Call `WriteOutput("test_output.txt", "content")`.
+    *   Assert file exists and contains "content".
+2.  **GREEN (Write Code):**
+    *   Create `cmd/ascii-art/file_writer.go`.
+    *   Implement `WriteOutput` using `os.Create` and `WriteString`.
 
-3.  **Update Main Logic (`cmd/ascii-art/main.go`)**
-    *   Update `Run` to use the new `input.ParseArgs` (Task 05).
-    *   If `Config.OutputFile` is set, call `WriteOutput`.
-    *   If empty, write to `os.Stdout`.
+### Cycle 2: Main Integration
+1.  **RED (Write Test):**
+    *   Update `test/integration_test.go` (or create a new test case there).
+    *   Run binary with `--output=result.txt`.
+    *   Assert `result.txt` is created.
+2.  **GREEN (Write Code):**
+    *   Update `cmd/ascii-art/main.go`.
+    *   In `Run`, check `Config.OutputFile`.
+    *   If set, call `WriteOutput`. Else, print to stdout.
+3.  **REFACTOR:**
+    *   Ensure file permissions are correct (0644).
     *   Add a test case in `test/integration_test.go` that runs with `--output` and verifies the file creation and content.
 
 ## Acceptance Criteria

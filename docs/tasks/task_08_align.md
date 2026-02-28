@@ -2,25 +2,34 @@
 
 **Objective:** Implement text alignment (left, center, right, justify) based on terminal size.
 
-## Steps
+## TDD Cycle (Red-Green-Refactor)
 
-1.  **Terminal Size Detection**
-    *   Use `golang.org/x/term` or `syscall` to get terminal width.
-    *   Fallback to a default (e.g., 80 columns) if detection fails or for testing.
-
-2.  **Implement Alignment Logic (`internal/render/align.go`)**
-    *   Calculate the width of the ASCII art block (8 lines).
-    *   **Left (Default):** `padding = 0`. Return lines as is (Backward Compatibility).
-    *   **Center:** `padding = (termWidth - artWidth) / 2`.
-    *   **Right:** `padding = termWidth - artWidth`.
-    *   **Justify:** Distribute spaces between words.
-    *   Apply padding (spaces) to the left of every line in the 8-line block.
-
-3.  **Unit Tests (`internal/render/align_test.go`)**
+### Cycle 1: Padding Calculation
+1.  **RED (Write Test):**
     *   Create `internal/render/align_test.go`.
-    *   Mock the terminal width in tests to ensure deterministic results.
-    *   Verify padding calculation for Center and Right.
-    *   Verify that `align=left` adds zero padding.
+    *   Write `TestCalculatePadding`.
+    *   Mock Terminal Width = 80. Art Width = 20.
+    *   Assert Center padding = 30. Right padding = 60.
+2.  **GREEN (Write Code):**
+    *   Create `internal/render/align.go`.
+    *   Implement math for padding.
+
+### Cycle 2: Application
+1.  **RED (Write Test):**
+    *   Write `TestApplyAlign`.
+    *   Input: 8-line ASCII block. Align: "right".
+    *   Assert spaces are prepended to each line.
+2.  **GREEN (Write Code):**
+    *   Implement `ApplyAlign` to iterate lines and add spaces.
+
+### Cycle 3: Defaults
+1.  **RED (Write Test):**
+    *   Write `TestApplyAlign_Left`.
+    *   Assert padding is 0 (string unchanged).
+2.  **GREEN (Write Code):**
+    *   Handle "left" or empty align by returning input as-is.
+3.  **REFACTOR:**
+    *   Integrate into `renderer.go`.
 
 ## Acceptance Criteria
 *   [ ] `--align=center` centers the art.

@@ -2,24 +2,34 @@
 
 **Objective:** Update the rendering engine to support ANSI color codes.
 
-## Steps
+## TDD Cycle (Red-Green-Refactor)
 
-1.  **Update Render Signature**
-    *   Update `Render` to accept `(*model.Config, model.Banner)`.
-
-2.  **Implement Color Logic (`internal/render/color.go`)**
-    *   Create a helper to map color names (red, blue) to ANSI codes (e.g., `\033[31m`).
-    *   Logic:
-        *   If `Config.Color` is empty, return the string exactly as is (Backward Compatibility).
-        *   If `Config.Color` is set:
-            *   Identify indices of characters to color (Whole string vs Substring).
-            *   When building the line, prepend ANSI code before the character and `\033[0m` (reset) after it.
-
-3.  **Unit Tests (`internal/render/color_test.go`)**
+### Cycle 1: Color Mapping
+1.  **RED (Write Test):**
     *   Create `internal/render/color_test.go`.
-    *   Test that specific substrings are wrapped in ANSI codes.
-    *   Test that the rest of the string remains untouched.
-    *   Test that empty color returns the original string without modification.
+    *   Write `TestGetColorCode`. Assert "red" returns "\033[31m".
+2.  **GREEN (Write Code):**
+    *   Create `internal/render/color.go`.
+    *   Implement a map or switch statement for standard colors.
+
+### Cycle 2: Color Application
+1.  **RED (Write Test):**
+    *   Write `TestColorize_Substring`.
+    *   Input: "Hello", Substring: "ll", Color: "red".
+    *   Assert output has ANSI codes around "ll".
+2.  **GREEN (Write Code):**
+    *   Implement logic to find indices of substring.
+    *   Construct new string with codes inserted.
+
+### Cycle 3: Defaults & Backward Compatibility
+1.  **RED (Write Test):**
+    *   Write `TestColorize_Empty`.
+    *   Input: "Hello", Color: "".
+    *   Assert output is identical to input (no codes).
+2.  **GREEN (Write Code):**
+    *   Add check: if color is empty, return string as-is.
+3.  **REFACTOR:**
+    *   Integrate into `renderer.go` by updating `Render` signature to accept `Config`.
 
 ## Acceptance Criteria
 *   [ ] Supports standard colors (red, green, blue, etc.).

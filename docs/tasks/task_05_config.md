@@ -2,36 +2,38 @@
 
 **Objective:** Update the shared model and implement robust flag parsing to support the new features.
 
-## Steps
+## TDD Cycle (Red-Green-Refactor)
 
-1.  **Define Config Model (`pkg/model/config.go`)**
-    *   Create a struct `Config` containing:
-        *   `Input` (string)
-        *   `BannerFile` (string) // Default: "standard"
-        *   `Color` (string)      // Default: "" (No color/Standard terminal text)
-        *   `ColorSubstr` (string)// Default: ""
-        *   `OutputFile` (string) // Default: "" (Stdout)
-        *   `Align` (string)      // Default: "left"
-
-2.  **Implement Flag Parser (`internal/input/flags.go`)**
-    *   Create a new file `internal/input/flags.go`.
-    *   Implement `ParseArgs(args []string) (*model.Config, error)`.
-    *   Logic:
-        *   Loop through args to find flags starting with `--`.
-        *   Extract values for `--color`, `--output`, `--align`.
-        *   Identify positional arguments:
-            *   If 1 arg remaining: `[STRING]` (Banner = standard).
-            *   If 2 args remaining: `[STRING] [BANNER]`.
-            *   Handle special case for Color: `[SUBSTRING] [STRING]`.
-        *   **Defaults:** Ensure that if flags are missing, `BannerFile` is "standard", `Align` is "left", and others are empty.
-    *   **Validation:** Ensure flags follow the exact format defined in PRD. Return specific usage errors if malformed.
-
-3.  **Unit Tests (`internal/input/flags_test.go`)**
+### Cycle 1: Config Model & Defaults
+1.  **RED (Write Test):**
     *   Create `internal/input/flags_test.go`.
-    *   Test flag extraction (`--output=test.txt`).
-    *   Test positional arg logic (1 vs 2 args).
-    *   **Test Defaults:** Verify that `go run . "hello"` results in Config{Banner: "standard", Align: "left", Color: "", Output: ""}.
-    *   Test the specific usage error messages.
+    *   Write `TestParseArgs_Defaults`. Call `ParseArgs([]string{"hello"})`.
+    *   Assert `Config.BannerFile` is "standard", `Align` is "left", `Color` is empty, `OutputFile` is empty.
+2.  **GREEN (Write Code):**
+    *   Create `pkg/model/config.go` with the `Config` struct.
+    *   Create `internal/input/flags.go`. Implement `ParseArgs` to return the default config for simple input.
+
+### Cycle 2: Flag Extraction
+1.  **RED (Write Test):**
+    *   Write `TestParseArgs_Flags`.
+    *   Input: `[]string{"--color=red", "--align=right", "--output=out.txt", "hello"}`.
+    *   Assert `Config` fields match the flags.
+2.  **GREEN (Write Code):**
+    *   Implement loop in `ParseArgs` to detect strings starting with `--`.
+    *   Split by `=` to get key/value.
+    *   Populate `Config`.
+
+### Cycle 3: Positional Arguments & Validation
+1.  **RED (Write Test):**
+    *   Write `TestParseArgs_Positional`.
+    *   Test 2 args: `["hello", "shadow"]` -> Banner should be "shadow".
+    *   Test Color special case: `["--color=red", "H", "Hello"]` -> Substring "H".
+    *   Test Invalid Flag format -> Expect specific usage error.
+2.  **GREEN (Write Code):**
+    *   Implement logic to handle remaining non-flag arguments.
+    *   Add validation logic for flag formats.
+3.  **REFACTOR:**
+    *   Clean up the parsing loop. Ensure specific error messages match PRD exactly.
 
 ## Acceptance Criteria
 *   [ ] `pkg/model/config.go` exists.

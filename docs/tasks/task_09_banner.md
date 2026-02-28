@@ -2,21 +2,24 @@
 
 **Objective:** Ensure the correct banner file is loaded based on user input.
 
-## Steps
+## TDD Cycle (Red-Green-Refactor)
 
-1.  **Map Banner Names to Paths**
-    *   In `internal/banner` or `cmd/ascii-art`, create a mapping:
-        *   `shadow` -> `assets/banners/shadow.txt`
-        *   `standard` -> `assets/banners/ascii_library.txt`
-        *   `thinkertoy` -> `assets/banners/thinkertoy.txt`
+### Cycle 1: Path Resolution
+1.  **RED (Write Test):**
+    *   Create `internal/banner/path_test.go` (or add to existing).
+    *   Write `TestGetBannerPath`.
+    *   Assert "shadow" -> "assets/banners/shadow.txt".
+    *   Assert "standard" -> "assets/banners/ascii_library.txt".
+2.  **GREEN (Write Code):**
+    *   Implement a helper function to map names to paths.
 
-2.  **Update Loader Call**
-    *   In `cmd/ascii-art/main.go`, use `Config.BannerFile` (from Task 05) to determine which file to load.
-    *   Pass the resolved path to `banner.LoadBanner`.
-
-3.  **Verification**
-    *   Ensure `go run . "hello" shadow` loads the shadow font.
-    *   Ensure `go run . "hello"` defaults to standard.
+### Cycle 2: Integration
+1.  **RED (Write Test):**
+    *   Add integration test case GT-11 ("hello" shadow).
+    *   Assert output matches shadow golden file.
+2.  **GREEN (Write Code):**
+    *   Update `cmd/ascii-art/main.go`.
+    *   Use `Config.BannerFile` to call the path resolver, then `LoadBanner`.
 
 ## Acceptance Criteria
 *   [ ] Supports `standard`, `shadow`, `thinkertoy`.
