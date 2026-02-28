@@ -9,7 +9,7 @@ import (
 	"os"
 )
 
-const defaultBannerPath = "assets/banners/ascii_library.txt"
+const defaultBannerPath = "assets/banners/standard.txt"
 
 // Run wires input parsing, banner loading, and rendering.
 // It writes the result to the provided writer (usually stdout).

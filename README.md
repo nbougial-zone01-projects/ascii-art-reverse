@@ -7,7 +7,7 @@ CLI tool that converts a single input string into ASCII art using a banner templ
 - Supports ASCII characters `32..126`.
 - Converts literal `\n` in input into real line breaks.
 - Preserves case, spacing, and consecutive empty lines.
-- Loads banner glyphs from `assets/banners/ascii_library.txt`.
+- Loads banner glyphs from `assets/banners/standard.txt`.
 - Includes unit tests and golden integration tests.
 
 ## Project Layout
@@ -80,6 +80,6 @@ The app exits with code `1` and prints an error when:
 
 ## Notes
 
-- Default banner path is fixed to `assets/banners/ascii_library.txt`.
+- Default banner path is fixed to `assets/banners/standard.txt`.
 - If rendering logic changes intentionally, regenerate golden files and rerun `go test ./...`.
 - In interactive `bash`, prefer single quotes when input contains `!` to avoid history expansion errors.

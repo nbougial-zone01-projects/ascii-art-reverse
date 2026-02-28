@@ -79,7 +79,7 @@ graph TD
 │   ├── tasks/                # Task breakdown (task_01, task_02, etc.)
 │   └── logs/                 # AI interaction logs (ai.log)
 ├── assets/                   # Static assets
-│   └── banners/              # ascii_library.txt (standard), shadow.txt, etc.
+│   └── banners/              # standard.txt, shadow.txt, thinkertoy.txt
 ├── go.mod
 └── Makefile                  # Build and test automation
 ```

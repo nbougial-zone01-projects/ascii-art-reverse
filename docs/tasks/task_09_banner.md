@@ -9,7 +9,7 @@
     *   Create `internal/banner/path_test.go` (or add to existing).
     *   Write `TestGetBannerPath`.
     *   Assert "shadow" -> "assets/banners/shadow.txt".
-    *   Assert "standard" -> "assets/banners/ascii_library.txt".
+    *   Assert "standard" -> "assets/banners/standard.txt".
 2.  **GREEN (Write Code):**
     *   Implement a helper function to map names to paths.
 

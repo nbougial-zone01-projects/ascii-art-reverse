@@ -1,6 +1,6 @@
 # Task 01: Banner Management (Developer 1)
 
-**Objective:** Implement the Data Layer (`internal/banner`) responsible for reading `ascii_library.txt` and parsing it into the `model.Banner` map.
+**Objective:** Implement the Data Layer (`internal/banner`) responsible for reading `standard.txt` and parsing it into the `model.Banner` map.
 
 ## TDD Cycle (Red-Green-Refactor)
 
