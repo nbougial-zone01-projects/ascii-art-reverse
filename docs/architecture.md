@@ -11,12 +11,12 @@ graph TD
     CLI -->|Calls| Banner[internal/banner]
     CLI -->|Calls| Render[internal/render]
     
-    Input -->|Returns Validated String| CLI
+    Input -->|Returns Config| CLI
     Banner -->|Returns Banner Map| CLI
     
-    CLI -->|Input + Banner| Render
+    CLI -->|Config + Banner| Render
     Render -->|Returns Art| CLI
-    CLI -->|Stdout| User
+    CLI -->|Stdout or File| User
     
     Test[test/integration] -->|Validates| CLI
 ```

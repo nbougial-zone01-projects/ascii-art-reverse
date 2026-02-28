@@ -2,7 +2,7 @@
 
 ## 1. Overview
 
-The ASCII Art Generator is a command-line application written in Go that receives a string as input and outputs a graphical ASCII-art representation of that string using predefined banner files.
+The ASCII Art Generator is a feature-rich command-line application written in Go. It converts input strings into graphical ASCII-art using predefined banner files, with support for text colorization, output alignment, and file export.
 
 The program must render letters, numbers, spaces, special characters, and newline sequences (`\n`) according to the format defined in the provided banner files.
 
@@ -15,6 +15,9 @@ The program must render letters, numbers, spaces, special characters, and newlin
   - `standard`
   - `shadow`
   - `thinkertoy`
+- **Colorize output** based on user input (whole string or substrings).
+- **Export output** to a file.
+- **Align text** (left, center, right, justify) relative to terminal size.
 - Ensure output strictly matches expected formatting examples.
 - Maintain clean, modular, and testable Go code.
 
@@ -25,9 +28,13 @@ The program must render letters, numbers, spaces, special characters, and newlin
 ### In Scope
 
 - Parsing CLI input.
+- Parsing flags (`--color`, `--output`, `--align`).
 - Interpreting literal `\n` as line breaks.
 - Loading banner files from the filesystem.
 - Rendering ASCII characters (ASCII 32–126).
+- Applying ANSI color codes to output.
+- Writing output to files.
+- Detecting terminal window size for alignment.
 - Supporting:
   - Uppercase letters
   - Lowercase letters
@@ -48,9 +55,9 @@ The program must render letters, numbers, spaces, special characters, and newlin
 
 ## 4. Functional Requirements
 
-### 4.1 Input Handling
+### 4.1 General Input Handling
 
-- The program must accept exactly one string argument.
+- The program must accept flags and positional arguments.
 - The input may contain:
   - Letters
   - Numbers
@@ -62,29 +69,71 @@ The program must render letters, numbers, spaces, special characters, and newlin
   - Handle multiple consecutive `\n`
   - Handle empty string input
 
-Example:
+### 4.2 Color Feature
 
-```bash
-go run . "Hello\nThere"
-```
+- **Flag:** `--color=<color>`
+- **Syntax:** `go run . --color=<color> <substring> "string"`
+- **Behavior:**
+  - Colors the specified `<substring>` within the string.
+  - If `<substring>` is not provided (or matches the main string), the whole string is colored.
+  - Supports standard color names (red, blue, etc.), RGB, or ANSI codes.
+- **Usage Error:** If the flag format is incorrect:
+  ```text
+  Usage: go run . [OPTION] [STRING]
+  
+  EX: go run . --color=<color> <substring to be colored> "something"
+  ```
 
-### 4.2 Banner Handling
+### 4.3 Output File Feature
+
+- **Flag:** `--output=<fileName.txt>`
+- **Syntax:** `go run . --output=<fileName.txt> [STRING] [BANNER]`
+- **Behavior:**
+  - Writes the resulting ASCII art to `<fileName.txt>` instead of stdout.
+  - Supports optional `[BANNER]` argument.
+- **Usage Error:** If the flag format is incorrect:
+  ```text
+  Usage: go run . [OPTION] [STRING] [BANNER]
+  
+  EX: go run . --output=<fileName.txt> something standard
+  ```
+
+### 4.4 Alignment Feature
+
+- **Flag:** `--align=<type>`
+- **Syntax:** `go run . --align=<type> [STRING] [BANNER]`
+- **Types:**
+  - `left` (default behavior)
+  - `center`
+  - `right`
+  - `justify`
+- **Behavior:**
+  - Adapts the graphical representation to the current terminal size.
+  - Only text that fits the terminal size will be tested.
+- **Usage Error:** If the flag format is incorrect:
+  ```text
+  Usage: go run . [OPTION] [STRING] [BANNER]
+  
+  Example: go run . --align=right something standard
+  ```
+
+### 4.5 Banner Selection
 
 Banner files are preformatted ASCII templates.
+The user can specify a banner as the last argument.
 
-Each character:
-
-- Has a height of 8 lines.
-- Is separated by a newline.
-- Characters are ordered by ASCII value (starting at ASCII 32: space).
-
-Banner files must not be modified.
-
-The system must load banner files dynamically from disk.
+- **Syntax:** `go run . [STRING] [BANNER]`
+- **Defaults:** If not specified, use `standard`.
+- **Usage Error:** If the format is incorrect:
+  ```text
+  Usage: go run . [STRING] [BANNER]
+  
+  EX: go run . something standard
+  ```
 
 ---
 
-### 4.3 Rendering Rules
+### 4.6 Rendering Rules
 
 Characters must be rendered horizontally.
 
@@ -101,7 +150,7 @@ Output must match provided examples exactly.
 
 ---
 
-### 4.4 Error Handling
+### 4.7 Error Handling
 
 The program must handle:
 
@@ -113,6 +162,7 @@ Errors must:
 
 - Not crash the program unexpectedly.
 - Provide clear, readable error messages.
+- Return the specific usage messages defined in sections 4.2, 4.3, 4.4, and 4.5 depending on the context.
 
 ### 5. Non-Functional Requirements
 
@@ -141,6 +191,10 @@ The project is considered complete when:
 - Output matches all provided examples exactly.
 - Multiple newline inputs behave correctly.
 - Case sensitivity is preserved.
+- **Color flag works for substrings and full strings.**
+- **Output flag correctly writes to files.**
+- **Alignment flag correctly positions text based on terminal width.**
+- **Banner argument correctly switches fonts.**
 - Unit tests pass.
 - Code is clean and modular.
 - No banner data is hardcoded.
@@ -164,12 +218,12 @@ The project is considered complete when:
 | Improper newline handling | Add dedicated newline test cases |
 | Merge conflicts between team members | Define API contracts early |
 | Output formatting mismatch | Use golden file tests |
+| Terminal size detection failure | Fallback to default width (e.g., 80 chars) |
 
 ---
 
 ### 10. Future Improvements (Optional)
 
-- Support banner selection via CLI argument.
 - Add performance optimizations.
 - Add additional ASCII fonts.
 - Add integration tests.

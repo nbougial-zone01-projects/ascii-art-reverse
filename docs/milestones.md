@@ -2,32 +2,44 @@
 
 ## Milestone 1: Foundation
 **Focus:** Project Setup & Shared Contracts
-- [ ] Task 00: Core Infrastructure
+- [x] Task 00: Core Infrastructure
     - Project initialized.
     - Directory structure created.
     - Shared `Banner` model defined.
 
 ## Milestone 2: Data & Input Handling
 **Focus:** Parsing & Validation
-- [ ] Task 01: Banner Management (Data Layer)
+- [x] Task 01: Banner Management (Data Layer)
     - Banner loader implemented.
     - Unit tests for file reading and parsing passed.
-- [ ] Task 02: Input Processing (Input Layer)
+- [x] Task 02: Input Processing (Input Layer)
     - CLI argument parser implemented.
     - Escape sequence handling (`\n`) working.
     - ASCII validation working.
 
 ## Milestone 3: Core Logic
 **Focus:** Rendering Engine
-- [ ] Task 03: Rendering Engine (Logic Layer)
+- [x] Task 03: Rendering Engine (Logic Layer)
     - Single line rendering working.
     - Multi-line rendering working.
     - Edge cases (empty strings) handled.
 
 ## Milestone 4: Delivery
 **Focus:** Integration & Quality Assurance
-- [ ] Task 04: Integration & Golden Tests
+- [x] Task 04: Integration & Golden Tests
     - Application wired in `main.go`.
     - Golden files generated and verified.
     - Integration test suite passing.
     - Final `go test ./...` check passed.
+
+## Milestone 5: Extended Features (Color, Output, Align)
+**Focus:** Advanced Functionality
+- [ ] Task 05: Advanced Input Parsing
+    - Implement flag parsing (`--color`, `--output`, `--align`).
+    - Update `Config` model.
+- [ ] Task 06: Enhanced Rendering
+    - Implement ANSI color application.
+    - Implement text alignment (terminal size detection).
+- [ ] Task 07: File Output & Integration
+    - Implement file writing in `main`.
+    - Update integration tests for new features.
