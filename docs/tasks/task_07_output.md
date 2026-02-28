@@ -4,14 +4,19 @@
 
 ## Steps
 
-1.  **Update Main Logic (`cmd/ascii-art/main.go`)**
-    *   Update `Run` to use the new `input.ParseArgs` (Task 05).
-    *   Check `Config.OutputFile`.
-    *   **Logic:**
-        *   If `OutputFile` is empty, write to `os.Stdout` (existing behavior).
-        *   If `OutputFile` is set, create/truncate the file and write the result there.
+1.  **Implement File Writer (`cmd/ascii-art/file_writer.go`)**
+    *   Create `cmd/ascii-art/file_writer.go`.
+    *   Implement a function `WriteOutput(filename string, content string) error`.
+    *   Logic: Create/Truncate file and write content.
 
-2.  **Integration Test Update**
+2.  **Unit Tests (`cmd/ascii-art/file_writer_test.go`)**
+    *   Create `cmd/ascii-art/file_writer_test.go`.
+    *   Test file creation and content writing (use temporary files).
+
+3.  **Update Main Logic (`cmd/ascii-art/main.go`)**
+    *   Update `Run` to use the new `input.ParseArgs` (Task 05).
+    *   If `Config.OutputFile` is set, call `WriteOutput`.
+    *   If empty, write to `os.Stdout`.
     *   Add a test case in `test/integration_test.go` that runs with `--output` and verifies the file creation and content.
 
 ## Acceptance Criteria

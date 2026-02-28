@@ -10,14 +10,17 @@
 
 2.  **Implement Alignment Logic (`internal/render/align.go`)**
     *   Calculate the width of the ASCII art block (8 lines).
+    *   **Left (Default):** `padding = 0`. Return lines as is (Backward Compatibility).
     *   **Center:** `padding = (termWidth - artWidth) / 2`.
     *   **Right:** `padding = termWidth - artWidth`.
     *   **Justify:** Distribute spaces between words.
     *   Apply padding (spaces) to the left of every line in the 8-line block.
 
-3.  **Unit Tests**
+3.  **Unit Tests (`internal/render/align_test.go`)**
+    *   Create `internal/render/align_test.go`.
     *   Mock the terminal width in tests to ensure deterministic results.
     *   Verify padding calculation for Center and Right.
+    *   Verify that `align=left` adds zero padding.
 
 ## Acceptance Criteria
 *   [ ] `--align=center` centers the art.

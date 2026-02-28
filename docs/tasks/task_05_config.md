@@ -7,14 +7,15 @@
 1.  **Define Config Model (`pkg/model/config.go`)**
     *   Create a struct `Config` containing:
         *   `Input` (string)
-        *   `BannerFile` (string, default "standard")
-        *   `Color` (string)
-        *   `ColorSubstr` (string)
-        *   `OutputFile` (string)
-        *   `Align` (string, default "left")
+        *   `BannerFile` (string) // Default: "standard"
+        *   `Color` (string)      // Default: "" (No color/Standard terminal text)
+        *   `ColorSubstr` (string)// Default: ""
+        *   `OutputFile` (string) // Default: "" (Stdout)
+        *   `Align` (string)      // Default: "left"
 
-2.  **Implement Flag Parser (`internal/input/parser.go`)**
-    *   Refactor `ParseInput` to `ParseArgs(args []string) (*model.Config, error)`.
+2.  **Implement Flag Parser (`internal/input/flags.go`)**
+    *   Create a new file `internal/input/flags.go`.
+    *   Implement `ParseArgs(args []string) (*model.Config, error)`.
     *   Logic:
         *   Loop through args to find flags starting with `--`.
         *   Extract values for `--color`, `--output`, `--align`.
@@ -22,11 +23,14 @@
             *   If 1 arg remaining: `[STRING]` (Banner = standard).
             *   If 2 args remaining: `[STRING] [BANNER]`.
             *   Handle special case for Color: `[SUBSTRING] [STRING]`.
+        *   **Defaults:** Ensure that if flags are missing, `BannerFile` is "standard", `Align` is "left", and others are empty.
     *   **Validation:** Ensure flags follow the exact format defined in PRD. Return specific usage errors if malformed.
 
-3.  **Unit Tests (`internal/input/parser_test.go`)**
+3.  **Unit Tests (`internal/input/flags_test.go`)**
+    *   Create `internal/input/flags_test.go`.
     *   Test flag extraction (`--output=test.txt`).
     *   Test positional arg logic (1 vs 2 args).
+    *   **Test Defaults:** Verify that `go run . "hello"` results in Config{Banner: "standard", Align: "left", Color: "", Output: ""}.
     *   Test the specific usage error messages.
 
 ## Acceptance Criteria
