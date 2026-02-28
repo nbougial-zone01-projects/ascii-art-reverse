@@ -4,34 +4,28 @@ import (
 	"ascii-art/internal/banner"
 	"ascii-art/internal/input"
 	"ascii-art/internal/render"
-	"ascii-art/pkg/model"
 	"fmt"
 	"io"
 	"os"
 )
 
-const defaultBannerPath = "assets/banners/standard.txt"
-
 // Run wires input parsing, banner loading, and rendering.
 // It writes the result to the provided writer (usually stdout).
 func Run(args []string, stdout io.Writer) error {
 	// 1. Parse and validate input arguments
-	parsed, err := input.ParseInput(args)
+	cfg, err := input.ParseArgs(args)
 	if err != nil {
 		return err
 	}
 
 	// 2. Load the banner font from the assets directory
-	b, err := banner.LoadBanner(defaultBannerPath)
+	bannerPath := fmt.Sprintf("assets/banners/%s.txt", cfg.BannerFile)
+	b, err := banner.LoadBanner(bannerPath)
 	if err != nil {
 		return err
 	}
 
 	// 3. Render the string using the loaded banner and print to output
-	cfg := &model.Config{
-		Input:      parsed,
-		BannerFile: "standard",
-	}
 	_, err = fmt.Fprint(stdout, render.Render(cfg, b))
 	return err
 }

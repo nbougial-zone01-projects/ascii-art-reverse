@@ -71,5 +71,16 @@ func ParseArgs(args []string) (*model.Config, error) {
 		return nil, ErrUsage
 	}
 
+	// Sanitize Input: Handle escape sequences and validate ASCII
+	cfg.Input = strings.ReplaceAll(cfg.Input, "\\n", "\n")
+	for _, r := range cfg.Input {
+		if r == '\n' {
+			continue
+		}
+		if r < 32 || r > 126 {
+			return nil, ErrInvalidASCII
+		}
+	}
+
 	return cfg, nil
 }
