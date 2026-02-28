@@ -61,3 +61,61 @@ func TestParseArgs_Empty(t *testing.T) {
 		t.Error("ParseArgs(empty) expected error, got nil")
 	}
 }
+
+func TestParseArgs_Positional(t *testing.T) {
+	tests := []struct {
+		name     string
+		args     []string
+		expected *model.Config
+		wantErr  bool
+	}{
+		{
+			name: "String and Banner",
+			args: []string{"hello", "shadow"},
+			expected: &model.Config{
+				Input:      "hello",
+				BannerFile: "shadow",
+				Align:      "left",
+				Color:      "",
+				OutputFile: "",
+			},
+		},
+		{
+			name: "Color Substring and String",
+			args: []string{"--color=red", "he", "hello"},
+			expected: &model.Config{
+				Input:       "hello",
+				BannerFile:  "standard",
+				Align:       "left",
+				Color:       "red",
+				ColorSubstr: "he",
+				OutputFile:  "",
+			},
+		},
+		{
+			name: "Color Substring, String, and Banner",
+			args: []string{"--color=green", "H", "Hello", "thinkertoy"},
+			expected: &model.Config{
+				Input:       "Hello",
+				BannerFile:  "thinkertoy",
+				Align:       "left",
+				Color:       "green",
+				ColorSubstr: "H",
+				OutputFile:  "",
+			},
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := ParseArgs(tt.args)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("ParseArgs() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if !tt.wantErr && !reflect.DeepEqual(got, tt.expected) {
+				t.Errorf("ParseArgs() = %+v, want %+v", got, tt.expected)
+			}
+		})
+	}
+}

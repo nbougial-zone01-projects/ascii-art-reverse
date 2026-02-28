@@ -44,14 +44,31 @@ func ParseArgs(args []string) (*model.Config, error) {
 		return nil, ErrUsage
 	}
 
-	// For now, assume the first positional arg is the input string.
-	// Complex logic (Banner selection, Color substring) will be added in Cycle 3.
-	cfg.Input = positionalArgs[0]
-
-	// Basic validation for input string (reuse existing logic if needed, or simple check)
-	if cfg.Input == "" {
-		// Depending on requirements, empty string might be valid or not.
-		// Current parser allows it but returns empty output.
+	switch len(positionalArgs) {
+	case 1:
+		// [STRING]
+		cfg.Input = positionalArgs[0]
+	case 2:
+		// If --color is set, it could be [SUBSTRING] [STRING]
+		// Otherwise, it is [STRING] [BANNER]
+		if cfg.Color != "" {
+			cfg.ColorSubstr = positionalArgs[0]
+			cfg.Input = positionalArgs[1]
+		} else {
+			cfg.Input = positionalArgs[0]
+			cfg.BannerFile = positionalArgs[1]
+		}
+	case 3:
+		// Must be [SUBSTRING] [STRING] [BANNER] and --color must be set
+		if cfg.Color != "" {
+			cfg.ColorSubstr = positionalArgs[0]
+			cfg.Input = positionalArgs[1]
+			cfg.BannerFile = positionalArgs[2]
+		} else {
+			return nil, ErrUsage
+		}
+	default:
+		return nil, ErrUsage
 	}
 
 	return cfg, nil
