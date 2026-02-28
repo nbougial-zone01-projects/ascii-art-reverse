@@ -11,7 +11,7 @@ graph TD
     CLI -->|Calls| Banner[internal/banner]
     CLI -->|Calls| Render[internal/render]
     
-    Input -->|Returns Config| CLI
+    Input -->|Returns Config Object| CLI
     Banner -->|Returns Banner Map| CLI
     
     CLI -->|Config + Banner| Render
@@ -34,7 +34,7 @@ graph TD
 ### 2. Input Layer (`internal/input`)
 *   **Responsibility:** Validation and Sanitization.
 *   **Key Functions:**
-    *   `ParseInput(args []string) (string, error)`: Checks argument count, handles escape sequences (converting literal `\n` to byte `10`), and validates ASCII range (32-126).
+    *   `ParseArgs(args []string) (*Config, error)`: Parses flags (`--color`, `--output`, `--align`), handles positional arguments, and validates input.
 
 ### 3. Data Layer (`internal/banner`)
 *   **Responsibility:** Data Access.
@@ -44,12 +44,13 @@ graph TD
 ### 4. Logic Layer (`internal/render`)
 *   **Responsibility:** Core Logic.
 *   **Key Functions:**
-    *   `Render(input string, b Banner) string`: Iterates through the input string. For each line of input, it constructs 8 lines of output by concatenating the slices from the `Banner` map.
+    *   `Render(config *Config, b Banner) string`: Generates the ASCII art, applies ANSI color codes if requested, and aligns text based on terminal width.
 
 ### 5. Shared Models (`pkg/model`)
 *   **Responsibility:** Data Contracts.
 *   **Data Structure:**
     *   `type Banner map[rune][]string`
+    *   `type Config struct { ... }`: Holds Input string, Banner name, Color settings, Output file path, and Alignment mode.
 
 ## Directory Structure
 ```

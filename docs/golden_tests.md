@@ -19,6 +19,14 @@ The following test cases define the input and the expected behavior.
 | **GT-08** | `""` | Empty string (should be handled gracefully) | `test/golden/empty.txt` |
 | **GT-09** | `"Hello\n\nWorld"` | Multiple consecutive newlines | `test/golden/double_newline.txt` |
 | **GT-10** | `"ABCDEFGHIJKLMNOPQRSTUVWXYZ"` | Full uppercase alphabet | `test/golden/all_upper.txt` |
+| **GT-11** | `"hello" shadow` | Banner selection (Shadow) | `test/golden/shadow_hello.txt` |
+| **GT-12** | `"hello" thinkertoy` | Banner selection (Thinkertoy) | `test/golden/thinkertoy_hello.txt` |
+| **GT-13** | `--align=right "hello"` | Right alignment (Fixed 80 cols) | `test/golden/align_right.txt` |
+| **GT-14** | `--align=center "hello"` | Center alignment (Fixed 80 cols) | `test/golden/align_center.txt` |
+| **GT-15** | `--align=justify "A B"` | Justify alignment (Fixed 80 cols) | `test/golden/align_justify.txt` |
+| **GT-16** | `--color=red "hello"` | Color full string (ANSI) | `test/golden/color_red.txt` |
+| **GT-17** | `--color=green "l" "hello"` | Color substring (ANSI) | `test/golden/color_substring.txt` |
+| **GT-18** | `--output=test_out.txt "hello"` | File output verification | `test/golden/output_file.txt` |
 
 ## Implementation Plan
 
@@ -26,6 +34,9 @@ The following test cases define the input and the expected behavior.
 > `go run ./cmd/ascii-art '!@#$%^&*()'`
 
 1.  **Generate Golden Files:**
+    *   **Constraint:** For Alignment tests (GT-13 to GT-15), the test runner must mock or force a terminal width of **80 columns** to ensure deterministic output.
+    *   **Constraint:** For Color tests (GT-16, GT-17), the output file will contain raw ANSI escape codes.
+    *   **Constraint:** For Output tests (GT-18), the verification compares the content of the *created file* against the golden file.
     *   Run a verified version of the code.
     *   Redirect output: `go run . "hello" > test/golden/hello.txt`.
     *   Manually inspect `hello.txt` to confirm it is correct.
