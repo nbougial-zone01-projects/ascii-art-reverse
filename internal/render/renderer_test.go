@@ -17,7 +17,7 @@ func TestRender_Simple(t *testing.T) {
 	expected := "Line1\nLine2\nLine3\nLine4\nLine5\nLine6\nLine7\nLine8"
 
 	// 3. Call the function (This will fail to compile initially because Render doesn't exist)
-	got := Render(input, mockBanner)
+	got := Render(&model.Config{Input: input}, mockBanner)
 
 	if got != expected {
 		t.Errorf("Render() = %q, want %q", got, expected)
@@ -35,7 +35,7 @@ func TestRender_MultiLine(t *testing.T) {
 	expected := "A1\nA2\nA3\nA4\nA5\nA6\nA7\nA8\n" +
 		"B1\nB2\nB3\nB4\nB5\nB6\nB7\nB8"
 
-	got := Render(input, mockBanner)
+	got := Render(&model.Config{Input: input}, mockBanner)
 
 	if got != expected {
 		t.Errorf("Render() = %q, want %q", got, expected)
@@ -48,7 +48,7 @@ func TestRender_EmptyLines(t *testing.T) {
 	// Test case: Single newline should produce a single newline output
 	input := "\n"
 	expected := "\n"
-	got := Render(input, mockBanner)
+	got := Render(&model.Config{Input: input}, mockBanner)
 
 	if got != expected {
 		t.Errorf("Render() = %q, want %q", got, expected)

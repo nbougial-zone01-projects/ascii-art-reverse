@@ -4,6 +4,7 @@ import (
 	"ascii-art/internal/banner"
 	"ascii-art/internal/input"
 	"ascii-art/internal/render"
+	"ascii-art/pkg/model"
 	"fmt"
 	"io"
 	"os"
@@ -27,7 +28,11 @@ func Run(args []string, stdout io.Writer) error {
 	}
 
 	// 3. Render the string using the loaded banner and print to output
-	_, err = fmt.Fprint(stdout, render.Render(parsed, b))
+	cfg := &model.Config{
+		Input:      parsed,
+		BannerFile: "standard",
+	}
+	_, err = fmt.Fprint(stdout, render.Render(cfg, b))
 	return err
 }
 
