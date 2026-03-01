@@ -28,10 +28,10 @@
     *   Add a test case in `test/integration_test.go` that runs with `--output` and verifies the file creation and content.
 
 ## Acceptance Criteria
-*   [ ] Flag `--output=<file>` redirects output from stdout to file.
-*   [ ] File is created if it doesn't exist.
-*   [ ] File is overwritten if it exists.
-*   [ ] Permissions are handled gracefully (return error if write fails).
+*   [x] Flag `--output=<file>` redirects output from stdout to file.
+*   [x] File is created if it doesn't exist.
+*   [x] File is overwritten if it exists.
+*   [x] Permissions are handled gracefully (return error if write fails).
 
 ## Note
 *   This task depends on Task 05 being complete (or the Config struct being available).

@@ -34,12 +34,12 @@
 
 ## Milestone 5: Extended Features (Color, Output, Align)
 **Focus:** Advanced Functionality
-- [ ] Task 05: Advanced Input Parsing
+- [x] Task 05: Advanced Input Parsing
     - Implement flag parsing (`--color`, `--output`, `--align`).
     - Update `Config` model.
-- [ ] Task 06: Enhanced Rendering
+- [x] Task 06: Enhanced Rendering
     - Implement ANSI color application.
     - Implement text alignment (terminal size detection).
-- [ ] Task 07: File Output & Integration
+- [x] Task 07: File Output & Integration
     - Implement file writing in `main`.
     - Update integration tests for new features.
