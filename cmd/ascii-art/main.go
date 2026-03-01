@@ -3,6 +3,7 @@ package main
 import (
 	"ascii-art/internal/banner"
 	"ascii-art/internal/input"
+	"ascii-art/internal/output"
 	"ascii-art/internal/render"
 	"fmt"
 	"io"
@@ -10,7 +11,7 @@ import (
 )
 
 // Run wires input parsing, banner loading, and rendering.
-// It writes the result to the provided writer (usually stdout).
+// It writes the result to the provided writer (usually stdout) or to a file if OutputFile is set.
 func Run(args []string, stdout io.Writer) error {
 	// 1. Parse and validate input arguments
 	cfg, err := input.ParseArgs(args)
@@ -25,8 +26,15 @@ func Run(args []string, stdout io.Writer) error {
 		return err
 	}
 
-	// 3. Render the string using the loaded banner and print to output
-	_, err = fmt.Fprint(stdout, render.Render(cfg, b))
+	// 3. Render the string using the loaded banner
+	result := render.Render(cfg, b)
+
+	// 4. Write to file or stdout based on Config.OutputFile
+	if cfg.OutputFile != "" {
+		return output.WriteOutput(cfg.OutputFile, result)
+	}
+
+	_, err = fmt.Fprint(stdout, result)
 	return err
 }
 

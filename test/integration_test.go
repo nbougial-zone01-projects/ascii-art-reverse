@@ -58,3 +58,43 @@ func TestGolden(t *testing.T) {
 		})
 	}
 }
+
+// TestOutputFlag verifies that the --output flag writes to a file instead of stdout.
+func TestOutputFlag(t *testing.T) {
+	outputFile := "result.txt"
+	defer os.Remove(outputFile)
+
+	// Execute with --output flag
+	cmd := exec.Command("go", "run", "./cmd/ascii-art", "--output="+outputFile, "hello")
+	cmd.Dir = ".."
+	var stderr bytes.Buffer
+	cmd.Stderr = &stderr
+	if err := cmd.Run(); err != nil {
+		t.Fatalf("command failed: %v, stderr: %s", err, stderr.String())
+	}
+
+	// Assert file was created
+	if _, err := os.Stat(filepath.Join("..", outputFile)); os.IsNotExist(err) {
+		t.Fatalf("Output file %s was not created", outputFile)
+	}
+
+	// Read the file content
+	data, err := os.ReadFile(filepath.Join("..", outputFile))
+	if err != nil {
+		t.Fatalf("Failed to read output file: %v", err)
+	}
+
+	// Read expected golden file
+	expected, err := os.ReadFile("golden/hello.txt")
+	if err != nil {
+		t.Fatalf("Failed to read golden file: %v", err)
+	}
+
+	// Compare content
+	if string(data) != string(expected) {
+		t.Fatalf("Output file content mismatch\nexpected:\n%s\nactual:\n%s", string(expected), string(data))
+	}
+
+	// Clean up
+	os.Remove(filepath.Join("..", outputFile))
+}
