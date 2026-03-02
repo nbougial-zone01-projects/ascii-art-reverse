@@ -957,3 +957,26 @@ Documentation Update:
 - Added a table summarizing available flags and their usage patterns.
 
 Log Update: Appended this action to `ai.log`.
+
+Timestamp: 2026-03-02 User Request: "can you update Makefile with examples in the run_examples section so we check some results automatically. dont make exaples for output method"
+
+AI Assistant Output & Actions:
+
+Makefile Update:
+- Updated `run-examples` target in `Makefile`.
+- Added comprehensive examples for Standard, Shadow, Thinkertoy banners.
+- Added examples for Color (full and substring) and Alignment (right, center, justify).
+- Excluded Output method examples as requested.
+
+Log Update: Appended this action to `ai.log`.
+
+Timestamp: 2026-03-02 User Request: "can you also make some wrong inputs so we can test the usage of all the inputs?"
+
+AI Assistant Output & Actions:
+
+Makefile Update:
+- Added error case examples to `run-examples` target in `Makefile`.
+- Included tests for no arguments and missing `=` in `--color`, `--output`, and `--align` flags.
+- Used `-` prefix in Makefile to allow execution to continue despite exit code 1.
+
+Log Update: Appended this action to `ai.log`.
