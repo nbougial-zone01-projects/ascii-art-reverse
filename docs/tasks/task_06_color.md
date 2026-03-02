@@ -32,10 +32,10 @@
     *   Integrate into `renderer.go` by updating `Render` signature to accept `Config`.
 
 ## Acceptance Criteria
-*   [ ] Supports standard colors (red, green, blue, etc.).
-*   [ ] Colors the whole string if no substring is provided.
-*   [ ] Colors only the substring if provided.
-*   [ ] Output contains correct ANSI escape sequences.
+*   [x] Supports standard colors (red, green, blue, etc.).
+*   [x] Colors the whole string if no substring is provided.
+*   [x] Colors only the substring if provided.
+*   [x] Output contains correct ANSI escape sequences.
 
 ## Note
 *   Coordinate with Developer 4 (Align) as you both modify `renderer.go`.

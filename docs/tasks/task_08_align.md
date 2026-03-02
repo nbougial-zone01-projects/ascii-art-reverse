@@ -32,9 +32,9 @@
     *   Integrate into `renderer.go`.
 
 ## Acceptance Criteria
-*   [ ] `--align=center` centers the art.
-*   [ ] `--align=right` aligns to right edge.
-*   [ ] `--align=justify` spreads words across the line.
+*   [x] `--align=center` centers the art.
+*   [x] `--align=right` aligns to right edge.
+*   [x] `--align=justify` spreads words across the line.
 *   [ ] Adapts to window size (if running in real terminal).
 
 ## Note

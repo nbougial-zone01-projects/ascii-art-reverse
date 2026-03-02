@@ -36,8 +36,8 @@
     *   Clean up the parsing loop. Ensure specific error messages match PRD exactly.
 
 ## Acceptance Criteria
-*   [ ] `pkg/model/config.go` exists.
-*   [ ] `ParseArgs` returns a populated `Config` object.
-*   [ ] Correctly identifies `[STRING]` vs `[BANNER]`.
-*   [ ] Correctly parses `--color`, `--output`, `--align`.
+*   [x] `pkg/model/config.go` exists.
+*   [x] `ParseArgs` returns a populated `Config` object.
+*   [x] Correctly identifies `[STRING]` vs `[BANNER]`.
+*   [x] Correctly parses `--color`, `--output`, `--align`.
 *   [ ] Returns specific error messages for bad flags as per PRD.

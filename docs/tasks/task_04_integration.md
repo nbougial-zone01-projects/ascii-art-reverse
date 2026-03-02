@@ -38,8 +38,8 @@
 *   `test/integration_test.go` (Automated regression suite).
 
 ## Acceptance Criteria
-*   [ ] `go run ./cmd/ascii-art "hello"` prints the ASCII art to stdout.
-*   [ ] Golden files (`test/golden/*.txt`) exist for all 10 test cases.
-*   [ ] `go test ./test/...` passes, verifying actual output matches golden files.
-*   [ ] The application defaults to `assets/banners/standard.txt`.
-*   [ ] CI check (`go test ./...`) passes for the whole project.
+*   [x] `go run ./cmd/ascii-art "hello"` prints the ASCII art to stdout.
+*   [x] Golden files (`test/golden/*.txt`) exist for all 10 test cases.
+*   [x] `go test ./test/...` passes, verifying actual output matches golden files.
+*   [x] The application defaults to `assets/banners/standard.txt`.
+*   [x] CI check (`go test ./...`) passes for the whole project.

@@ -30,7 +30,7 @@
     *   Run `go build ./...` to ensure the package structure is valid and there are no syntax errors in the struct definition.
 
 ## Acceptance Criteria
-*   [ ] `go.mod` exists and module name is `ascii-art`.
-*   [ ] All directories (`cmd`, `internal`, `pkg`, `test`, `assets`) exist.
-*   [ ] `pkg/model/banner.go` defines `type Banner map[rune][]string`.
-*   [ ] `go build ./...` runs without errors.
+*   [x] `go.mod` exists and module name is `ascii-art`.
+*   [x] All directories (`cmd`, `internal`, `pkg`, `test`, `assets`) exist.
+*   [x] `pkg/model/banner.go` defines `type Banner map[rune][]string`.
+*   [x] `go build ./...` runs without errors.

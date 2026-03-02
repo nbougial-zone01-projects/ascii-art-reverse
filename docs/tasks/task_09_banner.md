@@ -22,6 +22,6 @@
     *   Use `Config.BannerFile` to call the path resolver, then `LoadBanner`.
 
 ## Acceptance Criteria
-*   [ ] Supports `standard`, `shadow`, `thinkertoy`.
-*   [ ] Returns error if banner is unknown or file missing.
-*   [ ] Defaults to `standard` if not specified.
+*   [x] Supports `standard`, `shadow`, `thinkertoy`.
+*   [x] Returns error if banner is unknown or file missing.
+*   [x] Defaults to `standard` if not specified.

@@ -41,8 +41,8 @@
 
 ## Acceptance Criteria
 *   [ ] `Render` function accepts a string and a `Banner` map.
-*   [ ] Output string consists of 8 lines of height for every line of input text.
-*   [ ] Characters are concatenated horizontally with correct spacing.
-*   [ ] Newlines in input result in a new 8-line block in output.
-*   [ ] Empty input strings result in no output (or just a newline if appropriate).
-*   [ ] Unit tests cover single line, multi-line, and empty inputs.
+*   [x] Output string consists of 8 lines of height for every line of input text.
+*   [x] Characters are concatenated horizontally with correct spacing.
+*   [x] Newlines in input result in a new 8-line block in output.
+*   [x] Empty input strings result in no output (or just a newline if appropriate).
+*   [x] Unit tests cover single line, multi-line, and empty inputs.

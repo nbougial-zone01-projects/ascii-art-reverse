@@ -36,7 +36,7 @@
 *   Ensure `ParseInput` correctly handles `\n` vs `\\n`.
 
 ## Acceptance Criteria
-*   [ ] `ParseInput` returns an error if arguments length is not exactly 1.
-*   [ ] Literal `\n` sequences in input are converted to actual newline characters.
-*   [ ] Returns an error if input contains characters outside ASCII 32-126.
-*   [ ] Unit tests cover empty args, valid strings, escaped newlines, and invalid characters.
+*   [x] `ParseInput` returns an error if arguments length is not exactly 1.
+*   [x] Literal `\n` sequences in input are converted to actual newline characters.
+*   [x] Returns an error if input contains characters outside ASCII 32-126.
+*   [x] Unit tests cover empty args, valid strings, escaped newlines, and invalid characters.
