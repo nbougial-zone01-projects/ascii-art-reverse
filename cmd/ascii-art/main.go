@@ -19,8 +19,11 @@ func Run(args []string, stdout io.Writer) error {
 		return err
 	}
 
-	// 2. Load the banner font from the assets directory
-	bannerPath := fmt.Sprintf("assets/banners/%s.txt", cfg.BannerFile)
+	// 2. Resolve and load the selected banner font
+	bannerPath, err := banner.GetBannerPath(cfg.BannerFile)
+	if err != nil {
+		return err
+	}
 	b, err := banner.LoadBanner(bannerPath)
 	if err != nil {
 		return err
