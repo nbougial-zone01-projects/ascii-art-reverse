@@ -935,3 +935,14 @@ Code Polish:
 - Refined comments in `internal/output/writer_test.go` for clarity.
 
 Log Update: Appended this action to `ai.log`.
+
+Timestamp: 2026-03-02 User Request: "go ahead and replace yourself the proposal you made" (Update error handling)
+
+AI Assistant Output & Actions:
+
+Error Handling Update:
+- Updated `internal/input/flags.go` to enforce specific usage messages for malformed flags (`--color`, `--align`, `--output`).
+- Implemented checks for missing `=` in flags.
+- Implemented specific argument count validation for Color mode vs Standard mode to match PRD requirements.
+
+Log Update: Appended this action to `ai.log`.

@@ -2,85 +2,93 @@ package input
 
 import (
 	"ascii-art/pkg/model"
+	"fmt"
 	"strings"
 )
 
-// ParseArgs parses command line arguments into a Config object.
-// It handles flags (--color, --output, --align) and positional arguments.
+// ParseArgs parses the command line arguments into a Config struct.
+// It handles flags for color, output, and alignment, and validates usage.
 func ParseArgs(args []string) (*model.Config, error) {
-	cfg := &model.Config{
+	config := &model.Config{
 		BannerFile: "standard",
 		Align:      "left",
 	}
 
-	var positionalArgs []string
+	var remainingArgs []string
 
+	// 1. Parse Flags
 	for _, arg := range args {
 		if strings.HasPrefix(arg, "--") {
-			// Handle Flags
-			parts := strings.SplitN(arg[2:], "=", 2)
-			key := parts[0]
-			val := ""
-			if len(parts) > 1 {
-				val = parts[1]
+			if strings.HasPrefix(arg, "--color") {
+				if !strings.Contains(arg, "=") {
+					return nil, fmt.Errorf("Usage: go run cmd/ascii-art/main.go [OPTION] [STRING]\n\nEX: go run . --color=<color> <substring to be colored> \"something\"")
+				}
+				parts := strings.SplitN(arg, "=", 2)
+				config.Color = parts[1]
+			} else if strings.HasPrefix(arg, "--output") {
+				if !strings.Contains(arg, "=") {
+					return nil, fmt.Errorf("Usage: go run cmd/ascii-art/main.go [OPTION] [STRING] [BANNER]\n\nEX: go run cmd/ascii-art/main.go --output=<fileName.txt> something standard")
+				}
+				parts := strings.SplitN(arg, "=", 2)
+				config.OutputFile = parts[1]
+			} else if strings.HasPrefix(arg, "--align") {
+				if !strings.Contains(arg, "=") {
+					return nil, fmt.Errorf("Usage: go run cmd/ascii-art/main.go [OPTION] [STRING] [BANNER]\n\nExample: go run . --align=right something standard")
+				}
+				parts := strings.SplitN(arg, "=", 2)
+				config.Align = parts[1]
+			} else {
+				// Treat unknown flags as arguments or ignore, depending on strictness.
+				// For now, we assume they might be part of the string if not matched.
+				remainingArgs = append(remainingArgs, arg)
 			}
+		} else {
+			remainingArgs = append(remainingArgs, arg)
+		}
+	}
 
-			switch key {
-			case "output":
-				cfg.OutputFile = val
-			case "color":
-				cfg.Color = val
-			case "align":
-				cfg.Align = val
+	if len(remainingArgs) == 0 {
+		return nil, fmt.Errorf("Usage: go run cmd/ascii-art/main.go [OPTION] [STRING] [BANNER]\n\nEX: go run . something standard")
+	}
+
+	// 2. Parse Positional Arguments
+	if config.Color != "" {
+		// Color mode has specific argument structure: [ColorSubstr] [Input] [Banner]
+		switch len(remainingArgs) {
+		case 1:
+			config.Input = remainingArgs[0]
+		case 2:
+			config.ColorSubstr = remainingArgs[0]
+			config.Input = remainingArgs[1]
+		case 3:
+			config.ColorSubstr = remainingArgs[0]
+			config.Input = remainingArgs[1]
+			config.BannerFile = remainingArgs[2]
+		default:
+			return nil, fmt.Errorf("Usage: go run cmd/ascii-art/main.go [OPTION] [STRING]\n\nEX: go run . --color=<color> <substring to be colored> \"something\"")
+		}
+	} else {
+		// Standard mode: [Input] [Banner]
+		switch len(remainingArgs) {
+		case 1:
+			config.Input = remainingArgs[0]
+		case 2:
+			config.Input = remainingArgs[0]
+			config.BannerFile = remainingArgs[1]
+		default:
+			// If too many args, return specific error based on active flag
+			if config.OutputFile != "" {
+				return nil, fmt.Errorf("Usage: go run cmd/ascii-art/main.go [OPTION] [STRING] [BANNER]\n\nEX: go run . --output=<fileName.txt> something standard")
 			}
-		} else {
-			// Handle Positional Args
-			positionalArgs = append(positionalArgs, arg)
+			if config.Align != "left" {
+				return nil, fmt.Errorf("Usage: go run cmd/ascii-art/main.go [OPTION] [STRING] [BANNER]\n\nExample: go run . --align=right something standard")
+			}
+			return nil, fmt.Errorf("Usage: go run cmd/ascii-art/main.go [OPTION] [STRING] [BANNER]\n\nEX: go run . something standard")
 		}
 	}
 
-	// Validate and assign positional arguments
-	if len(positionalArgs) == 0 {
-		return nil, ErrUsage
-	}
+	// 3. Process Input (Handle escaped newlines)
+	config.Input = strings.ReplaceAll(config.Input, "\\n", "\n")
 
-	switch len(positionalArgs) {
-	case 1:
-		// [STRING]
-		cfg.Input = positionalArgs[0]
-	case 2:
-		// If --color is set, it could be [SUBSTRING] [STRING]
-		// Otherwise, it is [STRING] [BANNER]
-		if cfg.Color != "" {
-			cfg.ColorSubstr = positionalArgs[0]
-			cfg.Input = positionalArgs[1]
-		} else {
-			cfg.Input = positionalArgs[0]
-			cfg.BannerFile = positionalArgs[1]
-		}
-	case 3:
-		// Must be [SUBSTRING] [STRING] [BANNER] and --color must be set
-		if cfg.Color != "" {
-			cfg.ColorSubstr = positionalArgs[0]
-			cfg.Input = positionalArgs[1]
-			cfg.BannerFile = positionalArgs[2]
-		} else {
-			return nil, ErrUsage
-		}
-	default:
-		return nil, ErrUsage
-	}
-
-	// Sanitize Input: Handle escape sequences and validate ASCII
-	cfg.Input = strings.ReplaceAll(cfg.Input, "\\n", "\n")
-	for _, r := range cfg.Input {
-		if r == '\n' {
-			continue
-		}
-		if r < 32 || r > 126 {
-			return nil, ErrInvalidASCII
-		}
-	}
-
-	return cfg, nil
+	return config, nil
 }
