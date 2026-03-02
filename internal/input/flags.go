@@ -21,19 +21,19 @@ func ParseArgs(args []string) (*model.Config, error) {
 		if strings.HasPrefix(arg, "--") {
 			if strings.HasPrefix(arg, "--color") {
 				if !strings.Contains(arg, "=") {
-					return nil, fmt.Errorf("Usage: go run cmd/ascii-art/main.go [OPTION] [STRING]\n\nEX: go run . --color=<color> <substring to be colored> \"something\"")
+					return nil, fmt.Errorf("Usage: go run ./cmd/ascii-art [OPTION] [STRING]\n\nEX: go run . --color=<color> <substring to be colored> \"something\"")
 				}
 				parts := strings.SplitN(arg, "=", 2)
 				config.Color = parts[1]
 			} else if strings.HasPrefix(arg, "--output") {
 				if !strings.Contains(arg, "=") {
-					return nil, fmt.Errorf("Usage: go run cmd/ascii-art/main.go [OPTION] [STRING] [BANNER]\n\nEX: go run cmd/ascii-art/main.go --output=<fileName.txt> something standard")
+					return nil, fmt.Errorf("Usage: go run ./cmd/ascii-art [OPTION] [STRING] [BANNER]\n\nEX: go run ./cmd/ascii-art --output=<fileName.txt> something standard")
 				}
 				parts := strings.SplitN(arg, "=", 2)
 				config.OutputFile = parts[1]
 			} else if strings.HasPrefix(arg, "--align") {
 				if !strings.Contains(arg, "=") {
-					return nil, fmt.Errorf("Usage: go run cmd/ascii-art/main.go [OPTION] [STRING] [BANNER]\n\nExample: go run . --align=right something standard")
+					return nil, fmt.Errorf("Usage: go run ./cmd/ascii-art [OPTION] [STRING] [BANNER]\n\nExample: go run . --align=right something standard")
 				}
 				parts := strings.SplitN(arg, "=", 2)
 				config.Align = parts[1]
@@ -48,7 +48,7 @@ func ParseArgs(args []string) (*model.Config, error) {
 	}
 
 	if len(remainingArgs) == 0 {
-		return nil, fmt.Errorf("Usage: go run cmd/ascii-art/main.go [OPTION] [STRING] [BANNER]\n\nEX: go run . something standard")
+		return nil, fmt.Errorf("Usage: go run ./cmd/ascii-art [OPTION] [STRING] [BANNER]\n\nEX: go run . something standard")
 	}
 
 	// 2. Parse Positional Arguments
@@ -65,7 +65,7 @@ func ParseArgs(args []string) (*model.Config, error) {
 			config.Input = remainingArgs[1]
 			config.BannerFile = remainingArgs[2]
 		default:
-			return nil, fmt.Errorf("Usage: go run cmd/ascii-art/main.go [OPTION] [STRING]\n\nEX: go run . --color=<color> <substring to be colored> \"something\"")
+			return nil, fmt.Errorf("Usage: go run ./cmd/ascii-art [OPTION] [STRING]\n\nEX: go run . --color=<color> <substring to be colored> \"something\"")
 		}
 	} else {
 		// Standard mode: [Input] [Banner]
@@ -78,12 +78,12 @@ func ParseArgs(args []string) (*model.Config, error) {
 		default:
 			// If too many args, return specific error based on active flag
 			if config.OutputFile != "" {
-				return nil, fmt.Errorf("Usage: go run cmd/ascii-art/main.go [OPTION] [STRING] [BANNER]\n\nEX: go run . --output=<fileName.txt> something standard")
+				return nil, fmt.Errorf("Usage: go run ./cmd/ascii-art [OPTION] [STRING] [BANNER]\n\nEX: go run . --output=<fileName.txt> something standard")
 			}
 			if config.Align != "left" {
-				return nil, fmt.Errorf("Usage: go run cmd/ascii-art/main.go [OPTION] [STRING] [BANNER]\n\nExample: go run . --align=right something standard")
+				return nil, fmt.Errorf("Usage: go run ./cmd/ascii-art [OPTION] [STRING] [BANNER]\n\nExample: go run . --align=right something standard")
 			}
-			return nil, fmt.Errorf("Usage: go run cmd/ascii-art/main.go [OPTION] [STRING] [BANNER]\n\nEX: go run . something standard")
+			return nil, fmt.Errorf("Usage: go run ./cmd/ascii-art [OPTION] [STRING] [BANNER]\n\nEX: go run . something standard")
 		}
 	}
 

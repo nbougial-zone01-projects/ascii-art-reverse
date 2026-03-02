@@ -28,6 +28,20 @@ CLI tool that converts input strings into ASCII art using selectable banner temp
 
 - Go `1.21+`
 
+## Usage
+
+```bash
+go run ./cmd/ascii-art [OPTION] [STRING] [BANNER]
+```
+
+**Note:** Flags must use the `=` separator (e.g., `--color=red`). Space-separated flags are not supported.
+
+| Flag | Description | Format |
+|------|-------------|--------|
+| `--color` | Colorize the output | `--color=<color>` |
+| `--output` | Save output to a file | `--output=<file>` |
+| `--align` | Align the output | `--align=<type>` |
+
 ## Run
 
 ```bash

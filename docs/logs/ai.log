@@ -946,3 +946,14 @@ Error Handling Update:
 - Implemented specific argument count validation for Color mode vs Standard mode to match PRD requirements.
 
 Log Update: Appended this action to `ai.log`.
+
+Timestamp: 2026-03-02 User Request: "can you update the README.md?"
+
+AI Assistant Output & Actions:
+
+Documentation Update:
+- Updated `README.md` to include a dedicated "Usage" section.
+- Explicitly documented the requirement for `--flag=value` syntax to prevent user errors.
+- Added a table summarizing available flags and their usage patterns.
+
+Log Update: Appended this action to `ai.log`.
