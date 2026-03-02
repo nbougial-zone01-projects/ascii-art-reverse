@@ -14,6 +14,7 @@ func Render(config *model.Config, banner model.Banner) string {
 	terminalWidth := terminalWidthProvider()
 
 	colorCode := GetColorCode(config.Color)
+	// Pre-calculate which indices in the input string need coloring
 	indicesToColor := IdentifyColorIndices(input, config.ColorSubstr)
 	currentIndex := 0
 
@@ -21,7 +22,7 @@ func Render(config *model.Config, banner model.Banner) string {
 		// Add a newline between blocks of text, but not before the first one
 		if i > 0 {
 			sb.WriteByte('\n')
-			currentIndex++
+			currentIndex++ // Treat the newline as a character index for coloring purposes
 		}
 		// If the line is empty, we just needed the newline added above (if i > 0)
 		if line == "" {
@@ -31,6 +32,7 @@ func Render(config *model.Config, banner model.Banner) string {
 		// Iterate over each character in the current line of text
 		for _, char := range line {
 			if asciiLines, ok := banner[char]; ok {
+				// Check if the current character index is marked for coloring
 				applyColor := false
 				if config.Color != "" && indicesToColor[currentIndex] {
 					applyColor = true

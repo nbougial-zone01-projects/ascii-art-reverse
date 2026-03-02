@@ -39,6 +39,7 @@ func LoadBanner(filename string) (model.Banner, error) {
 	index := 0
 
 	// Skip the initial empty line if present (common in standard banner formats)
+	// Some banner files start with a newline, others don't. We adjust the index accordingly.
 	if len(lines) > 0 && lines[0] == "" {
 		index = 1
 	}
@@ -55,6 +56,7 @@ func LoadBanner(filename string) (model.Banner, error) {
 		index += glyphHeight
 
 		// Skip the empty line separator between glyphs, if it exists
+		// Standard banners have an empty line separating each character block.
 		if index < len(lines) && lines[index] == "" {
 			index++
 		}

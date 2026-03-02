@@ -26,7 +26,7 @@ func TestWriteOutput(t *testing.T) {
 		t.Fatalf("File %s was not created", filename)
 	}
 
-	// Assert file permissions are 0644 or 0664 (depending on umask)
+	// Assert file permissions are 0644 or 0664 (depending on the system's umask)
 	perm := info.Mode().Perm()
 	if perm != 0644 && perm != 0664 {
 		t.Errorf("Expected permissions 0644 or 0664, got %o", perm)

@@ -80,6 +80,7 @@ func TestGoldenAlign(t *testing.T) {
 			args := append([]string{"run", "./cmd/ascii-art"}, tc.args...)
 			cmd := exec.Command("go", args...)
 			cmd.Dir = ".."
+			// Force terminal width to 80 to ensure deterministic output for alignment tests
 			cmd.Env = append(os.Environ(), "COLUMNS=80")
 
 			var stdout bytes.Buffer

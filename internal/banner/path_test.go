@@ -5,6 +5,7 @@ import (
 	"testing"
 )
 
+// TestGetBannerPath verifies that banner names are correctly mapped to their file paths.
 func TestGetBannerPath(t *testing.T) {
 	tests := []struct {
 		name       string
@@ -30,4 +31,3 @@ func TestGetBannerPath(t *testing.T) {
 		})
 	}
 }
-
