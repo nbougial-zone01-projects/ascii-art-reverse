@@ -821,3 +821,63 @@ Git Workflow (Separated Commits):
 - Kept log updates isolated in `docs/logs/ai.log` for a dedicated log commit.
 
 Log Update: Appended this action to `ai.log`.
+
+Timestamp: 2026-03-02 User Request: "If task_08 is complete, start reviwing task_09 and start building with TDD"
+
+AI Assistant Output & Actions:
+
+Task 09 Execution (Banner Selection - TDD):
+
+Review:
+- Reviewed `docs/tasks/task_09_banner.md` and checked implementation status.
+- Identified missing explicit banner path resolver and missing integration golden cases GT-11/GT-12.
+
+TDD Cycle 1 (Path Resolution):
+- RED:
+  - Added `internal/banner/path_test.go` with `TestGetBannerPath` for:
+    - `standard` -> `assets/banners/standard.txt`
+    - `shadow` -> `assets/banners/shadow.txt`
+    - `thinkertoy` -> `assets/banners/thinkertoy.txt`
+    - `unknown` -> error (`ErrUnknownBanner`)
+  - Ran `go test ./internal/banner/...` and confirmed failing state (undefined resolver symbols).
+- GREEN:
+  - Added `internal/banner/path.go` with:
+    - `ErrUnknownBanner`
+    - `GetBannerPath(name string) (string, error)`
+    - Allowed banner map (`standard`, `shadow`, `thinkertoy`)
+  - Updated `cmd/ascii-art/main.go` to use `banner.GetBannerPath(cfg.BannerFile)` before `LoadBanner`.
+
+TDD Cycle 2 (Integration):
+- RED:
+  - Updated `test/integration_test.go` with `TestGoldenBannerSelection`:
+    - GT-11: `hello shadow` -> `test/golden/shadow_hello.txt`
+    - GT-12: `hello thinkertoy` -> `test/golden/thinkertoy_hello.txt`
+  - Ran `go test ./test/...` and confirmed failing state (missing golden files).
+- GREEN:
+  - Generated golden files:
+    - `test/golden/shadow_hello.txt`
+    - `test/golden/thinkertoy_hello.txt`
+
+Verification:
+- Ran `GOCACHE=/tmp/go-build go test ./internal/banner/...` -> PASS.
+- Ran `GOCACHE=/tmp/go-build go test ./test/...` -> PASS.
+- Ran `GOCACHE=/tmp/go-build go test ./...` -> PASS.
+
+Log Update: Appended this action to `ai.log`.
+
+Timestamp: 2026-03-02 User Request: "if task_09 is completed, commit the changes and keep the commits seperated"
+
+AI Assistant Output & Actions:
+
+Git Workflow (Separated Commits - Task 09):
+- Ran full verification before commit:
+  - `GOCACHE=/tmp/go-build go test ./...` -> PASS
+- Created separated implementation commit:
+  - `feat(banner): add validated banner path resolver`
+  - Files: `internal/banner/path.go`, `cmd/ascii-art/main.go`
+- Created separated test/golden commit:
+  - `test(banner): add Task 09 path and selection golden coverage`
+  - Files: `internal/banner/path_test.go`, `test/integration_test.go`, `test/golden/shadow_hello.txt`, `test/golden/thinkertoy_hello.txt`
+- Kept log update isolated for a dedicated docs(log) commit.
+
+Log Update: Appended this action to `ai.log`.
