@@ -14,6 +14,12 @@ type goldenCase struct {
 	goldenFile string
 }
 
+type featureGoldenCase struct {
+	name       string
+	args       []string
+	goldenFile string
+}
+
 func TestGolden(t *testing.T) {
 	testCases := []goldenCase{
 		{name: "GT-01", input: "hello", goldenFile: "hello.txt"},
@@ -52,6 +58,80 @@ func TestGolden(t *testing.T) {
 			}
 
 			// Compare actual stdout with the content of the golden file
+			if stdout.String() != string(expected) {
+				t.Fatalf("output mismatch\nexpected:\n%s\nactual:\n%s", string(expected), stdout.String())
+			}
+		})
+	}
+}
+
+func TestGoldenAlign(t *testing.T) {
+	testCases := []featureGoldenCase{
+		{name: "GT-13", args: []string{"--align=right", "hello"}, goldenFile: "align_right.txt"},
+		{name: "GT-14", args: []string{"--align=center", "hello"}, goldenFile: "align_center.txt"},
+		{name: "GT-15", args: []string{"--align=justify", "A B"}, goldenFile: "align_justify.txt"},
+	}
+
+	for _, tc := range testCases {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+
+			args := append([]string{"run", "./cmd/ascii-art"}, tc.args...)
+			cmd := exec.Command("go", args...)
+			cmd.Dir = ".."
+			cmd.Env = append(os.Environ(), "COLUMNS=80")
+
+			var stdout bytes.Buffer
+			var stderr bytes.Buffer
+			cmd.Stdout = &stdout
+			cmd.Stderr = &stderr
+			if err := cmd.Run(); err != nil {
+				t.Fatalf("command failed: %v, stderr: %s", err, stderr.String())
+			}
+
+			goldenPath := filepath.Join("golden", tc.goldenFile)
+			expected, err := os.ReadFile(goldenPath)
+			if err != nil {
+				t.Fatalf("read golden file %q: %v", goldenPath, err)
+			}
+
+			if stdout.String() != string(expected) {
+				t.Fatalf("output mismatch\nexpected:\n%s\nactual:\n%s", string(expected), stdout.String())
+			}
+		})
+	}
+}
+
+func TestGoldenBannerSelection(t *testing.T) {
+	testCases := []featureGoldenCase{
+		{name: "GT-11", args: []string{"hello", "shadow"}, goldenFile: "shadow_hello.txt"},
+		{name: "GT-12", args: []string{"hello", "thinkertoy"}, goldenFile: "thinkertoy_hello.txt"},
+	}
+
+	for _, tc := range testCases {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+
+			args := append([]string{"run", "./cmd/ascii-art"}, tc.args...)
+			cmd := exec.Command("go", args...)
+			cmd.Dir = ".."
+
+			var stdout bytes.Buffer
+			var stderr bytes.Buffer
+			cmd.Stdout = &stdout
+			cmd.Stderr = &stderr
+			if err := cmd.Run(); err != nil {
+				t.Fatalf("command failed: %v, stderr: %s", err, stderr.String())
+			}
+
+			goldenPath := filepath.Join("golden", tc.goldenFile)
+			expected, err := os.ReadFile(goldenPath)
+			if err != nil {
+				t.Fatalf("read golden file %q: %v", goldenPath, err)
+			}
+
 			if stdout.String() != string(expected) {
 				t.Fatalf("output mismatch\nexpected:\n%s\nactual:\n%s", string(expected), stdout.String())
 			}

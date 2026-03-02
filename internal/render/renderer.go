@@ -11,6 +11,7 @@ func Render(config *model.Config, banner model.Banner) string {
 	// Split input into lines to handle newlines correctly
 	inputLines := strings.Split(input, "\n")
 	var sb strings.Builder
+	terminalWidth := terminalWidthProvider()
 
 	colorCode := GetColorCode(config.Color)
 	indicesToColor := IdentifyColorIndices(input, config.ColorSubstr)
@@ -46,8 +47,13 @@ func Render(config *model.Config, banner model.Banner) string {
 			currentIndex++
 		}
 		// Combine the 8 rows into the final output builder
+		block := make([]string, 8)
 		for row := 0; row < 8; row++ {
-			sb.WriteString(lines[row].String())
+			block[row] = lines[row].String()
+		}
+		block = applyAlign(block, config.Align, terminalWidth)
+		for row := 0; row < 8; row++ {
+			sb.WriteString(block[row])
 			if row < 7 {
 				sb.WriteByte('\n')
 			}
