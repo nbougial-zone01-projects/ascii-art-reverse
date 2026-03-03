@@ -2,6 +2,7 @@ package render
 
 import (
 	"os"
+	"os/exec"
 	"strconv"
 	"strings"
 	"unicode"
@@ -12,6 +13,16 @@ const defaultTerminalWidth = 80
 var terminalWidthProvider = getTerminalWidth
 
 func getTerminalWidth() int {
+	// Try to get the width using 'tput', which is more reliable than COLUMNS in some shells.
+	cmd := exec.Command("tput", "cols")
+	cmd.Stdin = os.Stdin
+	out, err := cmd.Output()
+	if err == nil {
+		if n, err := strconv.Atoi(strings.TrimSpace(string(out))); err == nil && n > 0 {
+			return n
+		}
+	}
+
 	if cols := os.Getenv("COLUMNS"); cols != "" {
 		n, err := strconv.Atoi(cols)
 		if err == nil && n > 0 {
@@ -143,4 +154,3 @@ func visibleWidth(s string) int {
 	}
 	return len(cleaned.String())
 }
-

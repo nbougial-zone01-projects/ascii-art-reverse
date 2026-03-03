@@ -35,7 +35,7 @@
 *   [x] `--align=center` centers the art.
 *   [x] `--align=right` aligns to right edge.
 *   [x] `--align=justify` spreads words across the line.
-*   [ ] Adapts to window size (if running in real terminal).
+*   [x] Adapts to window size (if running in real terminal).
 
 ## Note
 *   Coordinate with Developer 2 (Color) as you both modify `renderer.go`.

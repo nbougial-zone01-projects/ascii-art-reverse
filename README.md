@@ -130,6 +130,6 @@ The app exits with code `1` and prints an error when:
 ## Notes
 
 - Default banner is `standard` (`assets/banners/standard.txt`).
-- Terminal width for alignment is read from `COLUMNS` (fallback: `80`).
+- Terminal width for alignment is detected via `tput cols` or `COLUMNS` (fallback: `80`).
 - If rendering logic changes intentionally, regenerate golden files and rerun `go test ./...`.
 - In interactive `bash`, prefer single quotes when input contains `!` to avoid history expansion errors.
