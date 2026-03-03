@@ -124,7 +124,7 @@ The app exits with code `1` and prints an error when:
 
 - input arguments are missing or invalid
 - input contains non-ASCII characters (outside `32..126`, excluding newline)
-- banner name is unknown or banner file cannot be read/is malformed
+- banner name is unknown (prints available banners) or banner file cannot be read/is malformed
 - color format is invalid or unrecognized
 
 ## Notes

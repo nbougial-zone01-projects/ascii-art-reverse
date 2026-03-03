@@ -27,11 +27,14 @@
 1.  **RED (Write Test):**
     *   Write `TestParseArgs_Positional`.
     *   Test 2 args: `["hello", "shadow"]` -> Banner should be "shadow".
-    *   Test Color special case: `["--color=red", "H", "Hello"]` -> Substring "H".
+    *   Test Color ambiguity: `["--color=red", "hello", "shadow"]` -> Input "hello", Banner "shadow".
+    *   Test Color substring: `["--color=red", "he", "hello"]` -> Substring "he", Input "hello".
     *   Test Invalid Flag format -> Expect specific usage error.
+    *   Test Invalid Banner -> Expect specific usage error listing banners.
 2.  **GREEN (Write Code):**
     *   Implement logic to handle remaining non-flag arguments.
-    *   Add validation logic for flag formats.
+    *   Implement `isBanner` check to disambiguate the second argument in color mode.
+    *   Add validation logic for flag formats and banner existence.
 3.  **REFACTOR:**
     *   Clean up the parsing loop. Ensure specific error messages match PRD exactly.
 

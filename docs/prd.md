@@ -76,12 +76,15 @@ The program must render letters, numbers, spaces, special characters, and newlin
 - **Behavior:**
   - Colors the specified `<substring>` within the string.
   - If `<substring>` is not provided (or matches the main string), the whole string is colored.
-  - Supports standard color names (red, blue, etc.), RGB, or ANSI codes.
-- **Usage Error:** If the flag format is incorrect:
+  - Supports standard color names (red, blue, etc.), Hex (#RRGGBB), RGB (rgb(r,g,b)), and HSL (hsl(h,s,l)).
+  - **Ambiguity Handling:** When 2 arguments are provided (`go run . --color=red arg1 arg2`), the program checks if `arg2` is a valid banner.
+    - If valid banner: `Input=arg1`, `Banner=arg2`.
+    - If not: `ColorSubstr=arg1`, `Input=arg2`.
+ - **Usage Error:** If the flag format is incorrect or color is invalid:
   ```text
-  Usage: go run . [OPTION] [STRING]
-  
-  EX: go run . --color=<color> <substring to be colored> "something"
+  Usage: go run . --color=<color> <substring> "string"
+
+  Supported formats: ANSI standard colors (red, green, blue...), Hex (#RRGGBB), RGB (rgb(r,g,b)), HSL (hsl(h,s,l))
   ```
 
 ### 4.3 Output File Feature
