@@ -30,7 +30,10 @@ func Run(args []string, stdout io.Writer) error {
 	}
 
 	// 3. Render the string using the loaded banner
-	result := render.Render(cfg, b)
+	result, err := render.Render(cfg, b)
+	if err != nil {
+		return err
+	}
 
 	// 4. Write to file or stdout based on Config.OutputFile
 	if cfg.OutputFile != "" {

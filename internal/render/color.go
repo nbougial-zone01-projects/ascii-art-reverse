@@ -7,6 +7,9 @@ import (
 	"strings"
 )
 
+// ColorUsage provides the usage message for the color flag.
+const ColorUsage = "Usage: go run . --color=<color> <substring> \"string\"\n\nSupported formats: ANSI standard colors (red, green, blue...), Hex (#RRGGBB), RGB (rgb(r,g,b)), HSL (hsl(h,s,l))"
+
 // standardColors maps common color names to their ANSI 3-bit/4-bit escape codes.
 var standardColors = map[string]string{
 	"reset":   "\033[0m",

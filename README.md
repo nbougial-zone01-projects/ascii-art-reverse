@@ -8,7 +8,7 @@ CLI tool that converts input strings into ASCII art using selectable banner temp
 - Converts literal `\n` in input into real line breaks.
 - Preserves case, spacing, and consecutive empty lines.
 - Supports banner selection: `standard`, `shadow`, `thinkertoy`.
-- Supports output colorization with `--color=<name>` (full string or substring mode).
+- Supports output colorization with `--color=<format>` (ANSI name, Hex, RGB, HSL).
 - Supports output redirection to file via `--output=<file>`.
 - Supports alignment with `--align=left|center|right|justify`.
 - Includes unit tests and golden integration tests.
@@ -125,6 +125,7 @@ The app exits with code `1` and prints an error when:
 - input arguments are missing or invalid
 - input contains non-ASCII characters (outside `32..126`, excluding newline)
 - banner name is unknown or banner file cannot be read/is malformed
+- color format is invalid or unrecognized
 
 ## Notes
 

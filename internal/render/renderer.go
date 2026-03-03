@@ -2,11 +2,12 @@ package render
 
 import (
 	"ascii-art/pkg/model"
+	"fmt"
 	"strings"
 )
 
 // Render converts the input string into an ASCII art string using the provided banner.
-func Render(config *model.Config, banner model.Banner) string {
+func Render(config *model.Config, banner model.Banner) (string, error) {
 	input := config.Input
 	// Split input into lines to handle newlines correctly
 	inputLines := strings.Split(input, "\n")
@@ -14,6 +15,9 @@ func Render(config *model.Config, banner model.Banner) string {
 	terminalWidth := terminalWidthProvider()
 
 	colorCode := GetColorCode(config.Color)
+	if config.Color != "" && colorCode == "" {
+		return "", fmt.Errorf(ColorUsage)
+	}
 	// Pre-calculate which indices in the input string need coloring
 	indicesToColor := IdentifyColorIndices(input, config.ColorSubstr)
 	currentIndex := 0
@@ -62,5 +66,5 @@ func Render(config *model.Config, banner model.Banner) string {
 		}
 	}
 
-	return sb.String()
+	return sb.String(), nil
 }
