@@ -1,6 +1,8 @@
 package render
 
-import "testing"
+import (
+	"testing"
+)
 
 func TestGetColorCode(t *testing.T) {
 	tests := []struct {
@@ -8,13 +10,32 @@ func TestGetColorCode(t *testing.T) {
 		input    string
 		expected string
 	}{
+		// Standard Colors
 		{"Red", "red", "\033[31m"},
-		{"Green", "green", "\033[32m"},
 		{"Blue", "blue", "\033[34m"},
-		{"Orange", "orange", "\033[38;5;208m"},
+		{"Reset", "reset", "\033[0m"},
+		{"Case Insensitive", "ReD", "\033[31m"},
+
+		// Hex Colors
+		{"Hex Red", "#ff0000", "\033[38;2;255;0;0m"},
+		{"Hex Green", "#00ff00", "\033[38;2;0;255;0m"},
+		{"Hex Short", "#f00", "\033[38;2;255;0;0m"},
+
+		// RGB Colors
+		{"RGB Red", "rgb(255, 0, 0)", "\033[38;2;255;0;0m"},
+		{"RGB Spacing", "rgb( 0 , 255 , 0 )", "\033[38;2;0;255;0m"},
+
+		// HSL Colors
+		{"HSL Red", "hsl(0, 100%, 50%)", "\033[38;2;255;0;0m"},
+		{"HSL Green", "hsl(120, 100%, 50%)", "\033[38;2;0;255;0m"},
+		{"HSL Blue", "hsl(240, 100%, 50%)", "\033[38;2;0;0;255m"},
+		{"HSL White", "hsl(0, 0%, 100%)", "\033[38;2;255;255;255m"},
+
+		// Invalid/Empty
 		{"Empty", "", ""},
-		{"Unknown", "mystic", ""},
-		{"CaseInsensitive", "ReD", "\033[31m"},
+		{"Invalid Name", "potato", ""},
+		{"Invalid Hex", "#zzzzzz", ""},
+		{"Invalid RGB", "rgb(255, 0)", ""},
 	}
 
 	for _, tt := range tests {
@@ -27,55 +48,69 @@ func TestGetColorCode(t *testing.T) {
 	}
 }
 
-func TestApplyColor(t *testing.T) {
-	colorCode := "\033[31m"
-	input := "A"
-	expected := "\033[31mA\033[0m"
-
-	got := ApplyColor(input, colorCode)
-	if got != expected {
-		t.Errorf("ApplyColor(%q, %q) = %q, want %q", input, colorCode, got, expected)
-	}
-}
-
 func TestIdentifyColorIndices(t *testing.T) {
 	tests := []struct {
 		name     string
 		input    string
 		sub      string
-		expected map[int]bool // Key is byte index
+		expected []bool
 	}{
 		{
-			name:     "WholeString",
-			input:    "abc",
+			name:     "Full String",
+			input:    "ABC",
 			sub:      "",
-			expected: map[int]bool{0: true, 1: true, 2: true},
+			expected: []bool{true, true, true},
 		},
 		{
-			name:     "SubstringMiddle",
-			input:    "hello",
+			name:     "Substring Match",
+			input:    "Hello",
 			sub:      "ll",
-			expected: map[int]bool{2: true, 3: true},
+			expected: []bool{false, false, true, true, false},
 		},
 		{
-			name:     "MultipleOccurrences",
+			name:     "No Match",
+			input:    "Hello",
+			sub:      "x",
+			expected: []bool{false, false, false, false, false},
+		},
+		{
+			name:     "Multiple Matches",
 			input:    "banana",
 			sub:      "a",
-			expected: map[int]bool{1: true, 3: true, 5: true},
+			expected: []bool{false, true, false, true, false, true},
+		},
+		{
+			name:     "Unicode Support",
+			input:    "Héllo",
+			sub:      "é",
+			expected: []bool{false, true, false, false, false},
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			got := IdentifyColorIndices(tt.input, tt.sub)
-			for idx, want := range tt.expected {
-				if !got[idx] && want {
-					t.Errorf("Index %d expected true, got false", idx)
+			if len(got) != len(tt.expected) {
+				t.Fatalf("IdentifyColorIndices() length = %d, want %d", len(got), len(tt.expected))
+			}
+			for i, v := range got {
+				if v != tt.expected[i] {
+					t.Errorf("IdentifyColorIndices()[%d] = %v, want %v", i, v, tt.expected[i])
 				}
 			}
-			if len(got) != len(tt.expected) {
-				t.Errorf("Expected %d indices, got %d", len(tt.expected), len(got))
-			}
 		})
+	}
+}
+
+func TestApplyColor(t *testing.T) {
+	got := ApplyColor("A", "\033[31m")
+	want := "\033[31mA\033[0m"
+	if got != want {
+		t.Errorf("ApplyColor() = %q, want %q", got, want)
+	}
+
+	gotEmpty := ApplyColor("A", "")
+	if gotEmpty != "A" {
+		t.Errorf("ApplyColor(empty) = %q, want %q", gotEmpty, "A")
 	}
 }
