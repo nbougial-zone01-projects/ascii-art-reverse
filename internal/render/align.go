@@ -5,7 +5,6 @@ import (
 	"os/exec"
 	"strconv"
 	"strings"
-	"unicode"
 )
 
 const defaultTerminalWidth = 80
@@ -60,13 +59,6 @@ func applyAlign(lines []string, align string, terminalWidth int) []string {
 	out := make([]string, len(lines))
 	copy(out, lines)
 
-	if mode == "justify" {
-		for i := range out {
-			out[i] = justifyLine(out[i], terminalWidth)
-		}
-		return out
-	}
-
 	maxWidth := 0
 	for _, line := range out {
 		w := visibleWidth(line)
@@ -85,54 +77,6 @@ func applyAlign(lines []string, align string, terminalWidth int) []string {
 		out[i] = pad + out[i]
 	}
 	return out
-}
-
-func justifyLine(line string, terminalWidth int) string {
-	width := visibleWidth(line)
-	if width >= terminalWidth {
-		return line
-	}
-
-	type gap struct {
-		start int
-		end   int
-	}
-	var gaps []gap
-	for i := 0; i < len(line); {
-		if unicode.IsSpace(rune(line[i])) {
-			start := i
-			for i < len(line) && unicode.IsSpace(rune(line[i])) {
-				i++
-			}
-			// Ignore leading/trailing spaces, spread only internal gaps.
-			if start > 0 && i < len(line) {
-				gaps = append(gaps, gap{start: start, end: i})
-			}
-			continue
-		}
-		i++
-	}
-	if len(gaps) == 0 {
-		return line
-	}
-
-	extra := terminalWidth - width
-	base := extra / len(gaps)
-	rem := extra % len(gaps)
-
-	var sb strings.Builder
-	last := 0
-	for i, g := range gaps {
-		sb.WriteString(line[last:g.end])
-		add := base
-		if i < rem {
-			add++
-		}
-		sb.WriteString(strings.Repeat(" ", add))
-		last = g.end
-	}
-	sb.WriteString(line[last:])
-	return sb.String()
 }
 
 func visibleWidth(s string) int {
