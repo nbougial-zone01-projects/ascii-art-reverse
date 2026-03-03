@@ -93,6 +93,18 @@ func TestParseArgs_Positional(t *testing.T) {
 			},
 		},
 		{
+			name: "Color Input and Banner",
+			args: []string{"--color=red", "hello", "shadow"},
+			expected: &model.Config{
+				Input:       "hello",
+				BannerFile:  "shadow",
+				Align:       "left",
+				Color:       "red",
+				ColorSubstr: "",
+				OutputFile:  "",
+			},
+		},
+		{
 			name: "Color Substring, String, and Banner",
 			args: []string{"--color=green", "H", "Hello", "thinkertoy"},
 			expected: &model.Config{
@@ -103,6 +115,11 @@ func TestParseArgs_Positional(t *testing.T) {
 				ColorSubstr: "H",
 				OutputFile:  "",
 			},
+		},
+		{
+			name:    "Invalid Banner",
+			args:    []string{"hello", "invalid"},
+			wantErr: true,
 		},
 	}
 

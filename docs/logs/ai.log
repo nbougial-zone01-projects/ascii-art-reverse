@@ -1028,3 +1028,108 @@ Bug Fix:
 - Action: Updated `hexToANSI` to explicitly check for parsing errors and return an empty string if invalid hex characters are found.
 
 Log Update: Appended this action to `ai.log`.
+
+Timestamp: 2026-03-02 User Request: "correct me if im wrong but right now if the color is not identified it just gives a standard output. i also want to give a usage message with the available colors"
+
+AI Assistant Output & Actions:
+
+Feature Update (Color Validation):
+- Confirmed current behavior: Invalid colors result in standard output.
+- Updated `internal/render/color.go`: Added `ColorUsage` constant listing supported formats.
+- Updated `internal/render/renderer.go`: Modified `Render` signature to return `(string, error)`. Added check for invalid color codes to return `ColorUsage` error.
+- Note: This change requires updates to `cmd/ascii-art/main.go` and `internal/render/renderer_test.go` to handle the new return value.
+
+Log Update: Appended this action to `ai.log`.
+
+Timestamp: 2026-03-02 User Request: "i want to reset to b6d400f97e7eea2e0f9c095193a386efe83b16e7"
+
+AI Assistant Output & Actions:
+
+Guidance:
+- Provided the `git reset --hard` command to revert the repository to the specified commit hash.
+
+Log Update: Appended this action to `ai.log`.
+
+Timestamp: 2026-03-02 User Request: "right now we are using a default output when color is not in the list of available colors right? i want to return a usage message with the avilable colors. moreover update the tests to that logic when needed"
+
+AI Assistant Output & Actions:
+
+Feature Update (Color Validation):
+- Updated `internal/render/color.go`: Added `ColorUsage` constant.
+- Updated `internal/render/renderer.go`: Modified `Render` to return `(string, error)` and validate color codes.
+- Updated `cmd/ascii-art/main.go`: Handled error return from `Render`.
+- Updated `internal/render/renderer_test.go`: Updated existing tests to handle new signature and added `TestRender_InvalidColor`.
+
+Log Update: Appended this action to `ai.log`.
+
+Timestamp: 2026-03-02 User Request: "Update the README.md to reflect the new behavior for invalid colors."
+
+AI Assistant Output & Actions:
+
+Documentation Update:
+- Updated `README.md`:
+    - Updated Features section to mention supported color formats (ANSI name, Hex, RGB, HSL).
+    - Updated Error Cases section to include invalid color formats.
+
+Log Update: Appended this action to `ai.log`.
+
+Timestamp: 2026-03-02 User Request: "i also want to improve the logic of the flags right now if i do --color=red it is equivalent to --coloradsdsdadas=red because right now we check the --color string if it exists inside the whole flag. i want the flag to be checked containing the flag up until '='. the same goes for all flags --color --align --output"
+
+AI Assistant Output & Actions:
+
+Refactoring (Flag Parsing):
+- Updated `internal/input/flags.go`:
+    - Changed flag detection logic from `strings.HasPrefix` to exact match on the key (before `=`).
+    - Used `strings.SplitN(arg, "=", 2)` to separate flag name and value.
+    - Ensures flags like `--colorless=true` are treated as arguments rather than matching `--color`.
+
+Log Update: Appended this action to `ai.log`.
+
+Timestamp: 2026-03-02 User Request: "i want, when color flag is passed the last argument to be strictly the banner"
+
+AI Assistant Output & Actions:
+
+Logic Update (Input Parsing):
+- Updated `internal/input/flags.go`:
+    - Modified argument parsing for Color mode when 2 arguments are provided.
+    - Changed interpretation from `[Substr] [Input]` to `[Input] [Banner]`.
+    - Updated usage error message to reflect the `[Substr] [Input] [Banner]` requirement for substrings.
+
+Log Update: Appended this action to `ai.log`.
+
+Timestamp: 2026-03-02 User Request: "can you update the tests as well to be in line with that?"
+
+AI Assistant Output & Actions:
+
+Test Update:
+- Updated `internal/input/flags_test.go`:
+    - Modified `TestParseArgs_Positional` case "Color Substring and String" to "Color Input and Banner".
+    - Updated expectations to match the new logic where 2 arguments with `--color` are interpreted as `[Input] [Banner]`.
+
+Log Update: Appended this action to `ai.log`.
+
+Timestamp: 2026-03-02 User Request: "small adjastment. i want when color flag is passed to check if the last argument is in the list of fonts. if it is use it as banner"
+
+AI Assistant Output & Actions:
+
+Logic Update (Input Parsing):
+- Updated `internal/input/flags.go`:
+    - Added `isBanner` helper function to check for known fonts (standard, shadow, thinkertoy).
+    - Modified 2-argument handling for `--color`: if the second arg is a banner, parse as `[Input] [Banner]`, otherwise `[Substr] [Input]`.
+- Updated `internal/input/flags_test.go`:
+    - Added test cases for both scenarios (Substring vs Banner) to ensure correct disambiguation.
+
+Log Update: Appended this action to `ai.log`.
+
+Timestamp: 2026-03-02 User Request: "when unknown banner is shown as error print a usage where it states the available fonts"
+
+AI Assistant Output & Actions:
+
+Validation Update:
+- Updated `internal/input/flags.go`:
+    - Added validation check for `config.BannerFile` using `isBanner`.
+    - Returns a specific usage error listing available banners if an unknown banner is provided.
+- Updated `internal/input/flags_test.go`:
+    - Added test case `Invalid Banner` to verify the new validation logic.
+
+Log Update: Appended this action to `ai.log`.

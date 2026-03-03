@@ -1,9 +1,10 @@
 package input
 
 import (
-	"ascii-art/pkg/model"
 	"fmt"
 	"strings"
+
+	"ascii-art/pkg/model"
 )
 
 // ParseArgs parses the command line arguments into a Config struct.
@@ -57,14 +58,19 @@ func ParseArgs(args []string) (*model.Config, error) {
 		case 1:
 			config.Input = remainingArgs[0]
 		case 2:
-			config.ColorSubstr = remainingArgs[0]
-			config.Input = remainingArgs[1]
+			if isBanner(remainingArgs[1]) {
+				config.Input = remainingArgs[0]
+				config.BannerFile = remainingArgs[1]
+			} else {
+				config.ColorSubstr = remainingArgs[0]
+				config.Input = remainingArgs[1]
+			}
 		case 3:
 			config.ColorSubstr = remainingArgs[0]
 			config.Input = remainingArgs[1]
 			config.BannerFile = remainingArgs[2]
 		default:
-			return nil, fmt.Errorf("Usage: go run ./cmd/ascii-art [OPTION] [STRING]\n\nEX: go run . --color=<color> <substring to be colored> \"something\"")
+			return nil, fmt.Errorf("Usage: go run ./cmd/ascii-art [OPTION] [STRING] [BANNER]\n\nEX: go run . --color=<color> <substring> <string> <banner>")
 		}
 	} else {
 		// Standard mode: [Input] [Banner]
@@ -89,5 +95,17 @@ func ParseArgs(args []string) (*model.Config, error) {
 	// 3. Process Input (Handle escaped newlines)
 	config.Input = strings.ReplaceAll(config.Input, "\\n", "\n")
 
+	if !isBanner(config.BannerFile) {
+		return nil, fmt.Errorf("Usage: go run ./cmd/ascii-art [OPTION] [STRING] [BANNER]\n\nEX: go run . something standard\n\nAvailable banners: standard, shadow, thinkertoy")
+	}
+
 	return config, nil
+}
+
+func isBanner(name string) bool {
+	switch name {
+	case "standard", "shadow", "thinkertoy":
+		return true
+	}
+	return false
 }
