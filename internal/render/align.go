@@ -12,6 +12,13 @@ const defaultTerminalWidth = 80
 var terminalWidthProvider = getTerminalWidth
 
 func getTerminalWidth() int {
+	// Check COLUMNS environment variable first (for testing/overrides)
+	if cols := os.Getenv("COLUMNS"); cols != "" {
+		if n, err := strconv.Atoi(cols); err == nil && n > 0 {
+			return n
+		}
+	}
+
 	// Try to get the width using 'tput', which is more reliable than COLUMNS in some shells.
 	cmd := exec.Command("tput", "cols")
 	cmd.Stdin = os.Stdin
@@ -22,12 +29,6 @@ func getTerminalWidth() int {
 		}
 	}
 
-	if cols := os.Getenv("COLUMNS"); cols != "" {
-		n, err := strconv.Atoi(cols)
-		if err == nil && n > 0 {
-			return n
-		}
-	}
 	return defaultTerminalWidth
 }
 
