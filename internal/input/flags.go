@@ -19,23 +19,22 @@ func ParseArgs(args []string) (*model.Config, error) {
 	// 1. Parse Flags
 	for _, arg := range args {
 		if strings.HasPrefix(arg, "--") {
-			if strings.HasPrefix(arg, "--color") {
-				if !strings.Contains(arg, "=") {
+			parts := strings.SplitN(arg, "=", 2)
+			flag := parts[0]
+			if flag == "--color" {
+				if len(parts) != 2 {
 					return nil, fmt.Errorf("Usage: go run ./cmd/ascii-art [OPTION] [STRING]\n\nEX: go run . --color=<color> <substring to be colored> \"something\"")
 				}
-				parts := strings.SplitN(arg, "=", 2)
 				config.Color = parts[1]
-			} else if strings.HasPrefix(arg, "--output") {
-				if !strings.Contains(arg, "=") {
+			} else if flag == "--output" {
+				if len(parts) != 2 {
 					return nil, fmt.Errorf("Usage: go run ./cmd/ascii-art [OPTION] [STRING] [BANNER]\n\nEX: go run ./cmd/ascii-art --output=<fileName.txt> something standard")
 				}
-				parts := strings.SplitN(arg, "=", 2)
 				config.OutputFile = parts[1]
-			} else if strings.HasPrefix(arg, "--align") {
-				if !strings.Contains(arg, "=") {
+			} else if flag == "--align" {
+				if len(parts) != 2 {
 					return nil, fmt.Errorf("Usage: go run ./cmd/ascii-art [OPTION] [STRING] [BANNER]\n\nExample: go run . --align=right something standard")
 				}
-				parts := strings.SplitN(arg, "=", 2)
 				config.Align = parts[1]
 			} else {
 				// Treat unknown flags as arguments or ignore, depending on strictness.
