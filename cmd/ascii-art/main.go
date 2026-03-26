@@ -1,13 +1,14 @@
 package main
 
 import (
+	"fmt"
+	"io"
+	"os"
+
 	"ascii-art/internal/banner"
 	"ascii-art/internal/input"
 	"ascii-art/internal/output"
 	"ascii-art/internal/render"
-	"fmt"
-	"io"
-	"os"
 )
 
 // Run wires input parsing, banner loading, and rendering.
@@ -40,7 +41,7 @@ func Run(args []string, stdout io.Writer) error {
 		return output.WriteOutput(cfg.OutputFile, result)
 	}
 
-	_, err = fmt.Fprint(stdout, result)
+	_, err = fmt.Fprintln(stdout, result)
 	return err
 }
 

@@ -33,7 +33,7 @@ func ParseArgs(args []string) (*model.Config, error) {
 				}
 				config.OutputFile = parts[1]
 			} else if flag == "--align" {
-				if len(parts) != 2 {
+				if len(parts) != 2 || !isAlign(parts[1]) {
 					return nil, fmt.Errorf("Usage: go run ./cmd/ascii-art [OPTION] [STRING] [BANNER]\n\nExample: go run . --align=right something standard")
 				}
 				config.Align = parts[1]
@@ -105,6 +105,14 @@ func ParseArgs(args []string) (*model.Config, error) {
 func isBanner(name string) bool {
 	switch name {
 	case "standard", "shadow", "thinkertoy":
+		return true
+	}
+	return false
+}
+
+func isAlign(name string) bool {
+	switch name {
+	case "left", "center", "right", "justify":
 		return true
 	}
 	return false
