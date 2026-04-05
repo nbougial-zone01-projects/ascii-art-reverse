@@ -6,6 +6,8 @@ The ASCII Art Generator is a feature-rich command-line application written in Go
 
 The program must render letters, numbers, spaces, special characters, and newline sequences (`\n`) according to the format defined in the provided banner files.
 
+The program also supports the **reverse** operation: given a file containing ASCII art produced by this tool, it reconstructs and prints the original input string.
+
 ---
 
 ## 2. Objectives
@@ -18,6 +20,7 @@ The program must render letters, numbers, spaces, special characters, and newlin
 - **Colorize output** based on user input (whole string or substrings).
 - **Export output** to a file.
 - **Align text** (left, center, right, justify) relative to terminal size.
+- **Reverse ASCII art** back to the original text string from a file.
 - Ensure output strictly matches expected formatting examples.
 - Maintain clean, modular, and testable Go code.
 
@@ -28,7 +31,7 @@ The program must render letters, numbers, spaces, special characters, and newlin
 ### In Scope
 
 - Parsing CLI input.
-- Parsing flags (`--color`, `--output`, `--align`).
+- Parsing flags (`--color`, `--output`, `--align`, `--reverse`).
 - Interpreting literal `\n` as line breaks.
 - Loading banner files from the filesystem.
 - Rendering ASCII characters (ASCII 32–126).
@@ -50,6 +53,7 @@ The program must render letters, numbers, spaces, special characters, and newlin
 - Editing or modifying banner files.
 - Supporting characters outside ASCII 32–126.
 - GUI or web interface.
+- Reversing ASCII art that was produced with color or alignment flags.
 
 ---
 
@@ -120,7 +124,33 @@ The program must render letters, numbers, spaces, special characters, and newlin
   Example: go run . --align=right something standard
   ```
 
-### 4.5 Banner Selection
+### 4.5 Reverse Feature
+
+- **Flag:** `--reverse=<fileName>`
+- **Syntax:** `go run . --reverse=<fileName>`
+- **Behavior:**
+  - Reads the specified file containing ASCII art produced by this tool.
+  - Reconstructs and prints the original input string to stdout.
+  - Uses the `standard` banner by default for glyph matching. An optional `[BANNER]` argument may be provided to specify which banner was used to produce the art.
+  - Each line of ASCII art (8 rows) is matched against the banner glyph map to identify the original character.
+  - Empty 8-row blocks (all blank lines) are treated as spaces.
+  - Multiple lines of ASCII art separated by a blank line are reconstructed with `\n` between them.
+- **File Not Found Error:** If the specified file does not exist:
+  ```text
+  Usage: go run . [OPTION]
+
+  EX: go run . --reverse=<fileName>
+
+  File not found: <fileName>
+  ```
+- **Usage Error:** If the flag format is incorrect:
+  ```text
+  Usage: go run . [OPTION]
+
+  EX: go run . --reverse=<fileName>
+  ```
+
+### 4.6 Banner Selection
 
 Banner files are preformatted ASCII templates.
 The user can specify a banner as the last argument.
@@ -136,7 +166,7 @@ The user can specify a banner as the last argument.
 
 ---
 
-### 4.6 Rendering Rules
+### 4.7 Rendering Rules
 
 Characters must be rendered horizontally.
 
@@ -153,19 +183,20 @@ Output must match provided examples exactly.
 
 ---
 
-### 4.7 Error Handling
+### 4.8 Error Handling
 
 The program must handle:
 
 - Missing banner file.
 - Invalid ASCII characters (outside 32–126).
 - Incorrect CLI usage.
+- Missing or non-existent file for `--reverse`.
 
 Errors must:
 
 - Not crash the program unexpectedly.
 - Provide clear, readable error messages.
-- Return the specific usage messages defined in sections 4.2, 4.3, 4.4, and 4.5 depending on the context.
+- Return the specific usage messages defined in sections 4.2, 4.3, 4.4, 4.5, and 4.6 depending on the context.
 
 ### 5. Non-Functional Requirements
 
@@ -198,6 +229,8 @@ The project is considered complete when:
 - **Output flag correctly writes to files.**
 - **Alignment flag correctly positions text based on terminal width.**
 - **Banner argument correctly switches fonts.**
+- **Reverse flag correctly reconstructs the original string from an ASCII art file.**
+- **Reverse flag returns a usage message with file-not-found info when the file does not exist.**
 - Unit tests pass.
 - Code is clean and modular.
 - No banner data is hardcoded.
@@ -222,6 +255,7 @@ The project is considered complete when:
 | Merge conflicts between team members | Define API contracts early |
 | Output formatting mismatch | Use golden file tests |
 | Terminal size detection failure | Fallback to default width (e.g., 80 chars) |
+| Ambiguous glyph matching in reverse | Use exact 8-line block comparison against banner map |
 
 ---
 

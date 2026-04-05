@@ -1240,3 +1240,19 @@ Clarification:
 Log Update: Appended this action to `ai.log`.
 
 Log Update: Appended this action to `ai.log`.
+
+Timestamp: 2026-03-02 User Request: "implement --reverse feature using TDD, step by step. first update the prd"
+
+AI Assistant Output & Actions:
+
+PRD Update (Reverse Feature):
+- Updated `docs/prd.md` section 1 (Overview) to mention the reverse operation.
+- Updated section 2 (Objectives) to include the reverse goal.
+- Updated section 3 (Scope) to include `--reverse` flag parsing and exclude reversing colored/aligned art.
+- Added section 4.5 (Reverse Feature) defining flag syntax, behavior, file-not-found error message, and usage error message.
+- Renumbered former 4.5 Banner Selection to 4.6, former 4.6 Rendering Rules to 4.7, former 4.7 Error Handling to 4.8.
+- Updated section 4.8 Error Handling to include missing/non-existent file for `--reverse`.
+- Updated section 7 Acceptance Criteria to include reverse flag correctness and file-not-found behavior.
+- Updated section 9 Risks & Mitigation to add ambiguous glyph matching risk.
+
+Log Update: Appended this action to `ai.log`.
