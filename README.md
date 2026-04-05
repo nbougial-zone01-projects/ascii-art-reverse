@@ -1,6 +1,6 @@
-# ASCII Art Generator (Go)
+# ASCII Art Generator & Reverser (Go)
 
-CLI tool that converts input strings into ASCII art using selectable banner templates.
+CLI tool that converts input strings into ASCII art using selectable banner templates, and can reverse ASCII art files back to the original text.
 
 ## Features
 
@@ -11,6 +11,7 @@ CLI tool that converts input strings into ASCII art using selectable banner temp
 - Supports output colorization with `--color=<format>` (ANSI name, Hex, RGB, HSL).
 - Supports output redirection to file via `--output=<file>`.
 - Supports alignment with `--align=left|center|right|justify`.
+- Supports reversing ASCII art files back to text via `--reverse=<file>`.
 - Includes unit tests and golden integration tests.
 
 ## Project Layout
@@ -20,9 +21,10 @@ CLI tool that converts input strings into ASCII art using selectable banner temp
 - `internal/banner`: banner file loading/parsing.
 - `internal/output`: file output writer.
 - `internal/render`: ASCII rendering engine.
+- `internal/reverse`: ASCII art reverse engine.
 - `pkg/model`: shared `Banner` and `Config` types.
 - `test/integration_test.go`: golden regression suite.
-- `test/golden/*.txt`: expected outputs (GT-01..GT-15 + banner/output cases).
+- `test/golden/*.txt`: expected outputs (GT-01..GT-15 + banner/output/reverse cases).
 
 ## Requirements
 
@@ -41,6 +43,7 @@ go run ./cmd/ascii-art [OPTION] [STRING] [BANNER]
 | `--color` | Colorize the output | `--color=<color>` |
 | `--output` | Save output to a file | `--output=<file>` |
 | `--align` | Align the output | `--align=<type>` |
+| `--reverse` | Reverse ASCII art file back to text | `--reverse=<file>` |
 
 ## Run
 
@@ -76,6 +79,18 @@ With file output:
 
 ```bash
 go run ./cmd/ascii-art --output=result.txt "hello"
+```
+
+Reverse an ASCII art file back to text:
+
+```bash
+go run ./cmd/ascii-art --reverse=result.txt
+```
+
+Reverse with a specific banner (required if art was produced with a non-standard banner):
+
+```bash
+go run ./cmd/ascii-art --reverse=result.txt shadow
 ```
 
 Or using `make`:
@@ -115,7 +130,7 @@ go test ./...
 ```
 
 This includes:
-- unit tests for `internal/banner`, `internal/input`, `internal/render`
+- unit tests for `internal/banner`, `internal/input`, `internal/render`, `internal/reverse`
 - golden integration tests in `test/integration_test.go`
 
 ## Error Cases
@@ -126,6 +141,8 @@ The app exits with code `1` and prints an error when:
 - input contains non-ASCII characters (outside `32..126`, excluding newline)
 - banner name is unknown (prints available banners) or banner file cannot be read/is malformed
 - color format is invalid or unrecognized
+- `--reverse` file does not exist (prints usage with file-not-found message)
+- `--reverse` file cannot be decoded (wrong banner specified or unsupported file format)
 
 ## Notes
 
@@ -133,3 +150,5 @@ The app exits with code `1` and prints an error when:
 - Terminal width for alignment is detected via `tput cols` or `COLUMNS` (fallback: `80`).
 - If rendering logic changes intentionally, regenerate golden files and rerun `go test ./...`.
 - In interactive `bash`, prefer single quotes when input contains `!` to avoid history expansion errors.
+- `--reverse` only supports files produced without `--color` or `--align` flags.
+- When reversing, always specify the banner that was used to produce the art (e.g., `--reverse=file.txt shadow`).

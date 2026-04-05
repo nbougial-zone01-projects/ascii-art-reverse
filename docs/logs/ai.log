@@ -1429,3 +1429,19 @@ Error Message Fix:
 - Ran `go test -count=1 ./internal/reverse/...` — PASS.
 
 Log Update: Appended this action to `ai.log`.
+
+Timestamp: 2026-03-02 User Request: "now update readme"
+
+AI Assistant Output & Actions:
+
+README Update:
+- Updated title to "ASCII Art Generator & Reverser (Go)".
+- Added `--reverse` to the Features section.
+- Added `internal/reverse` to the Project Layout section.
+- Added `--reverse` row to the flags table in Usage.
+- Added reverse usage examples (basic and with banner).
+- Updated Test section to include `internal/reverse` in unit test list.
+- Updated Error Cases to include file-not-found and decode failure for `--reverse`.
+- Added two Notes about reverse limitations and banner requirement.
+
+Log Update: Appended this action to `ai.log`.
