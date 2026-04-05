@@ -237,4 +237,5 @@ Use only standard packages
 Do not hallunicate
 Stay strict to what is mentioned in the documentation
 Do not assume things that are not stated
+In every new update made in the repo update ai.log
 When updating ai.log keep the format of the file untouched
