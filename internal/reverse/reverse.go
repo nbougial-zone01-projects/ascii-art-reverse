@@ -85,7 +85,7 @@ func decodeLine(rows []string, inv map[string]rune) (string, error) {
 			}
 		}
 		if !matched {
-			return "", fmt.Errorf("could not decode character at column %d", col)
+			return "", fmt.Errorf("Usage: go run . --reverse=<fileName> [BANNER]\n\nCould not decode character at column %d.\nNote: files produced with --color or --align flags are not supported for reversal.", col)
 		}
 	}
 

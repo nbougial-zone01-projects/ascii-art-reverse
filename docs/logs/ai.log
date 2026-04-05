@@ -1372,3 +1372,15 @@ Regression Check:
 Task 10 complete. All 4 TDD cycles done.
 
 Log Update: Appended this action to `ai.log`.
+
+Timestamp: 2026-03-02 User Request: "improve the error message for could not decode character at column 0"
+
+AI Assistant Output & Actions:
+
+Error Message Improvement:
+- Updated `internal/reverse/reverse.go`: replaced the bare `could not decode character at column %d` error with a user-friendly message that includes usage syntax and a note that files produced with `--color` or `--align` flags are not supported for reversal.
+- Verified correct output for both wrong-banner and colored-file scenarios.
+- Ran `go test -count=1 ./internal/reverse/...` — PASS.
+- Cleaned up temporary test file `test/golden/color_test_temp.txt`.
+
+Log Update: Appended this action to `ai.log`.
