@@ -24,4 +24,8 @@ type Config struct {
 	// Align specifies the text alignment ("left", "center", "right", "justify").
 	// Defaults to "left".
 	Align string
+
+	// ReverseFile is the path to a file containing ASCII art to reverse back to text.
+	// If set, the program runs in reverse mode instead of render mode.
+	ReverseFile string
 }

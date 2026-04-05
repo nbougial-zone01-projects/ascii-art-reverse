@@ -9,6 +9,7 @@ import (
 	"ascii-art/internal/input"
 	"ascii-art/internal/output"
 	"ascii-art/internal/render"
+	"ascii-art/internal/reverse"
 )
 
 // Run wires input parsing, banner loading, and rendering.
@@ -30,7 +31,21 @@ func Run(args []string, stdout io.Writer) error {
 		return err
 	}
 
-	// 3. Render the string using the loaded banner
+	// 3. Reverse mode: decode ASCII art file back to text
+	if cfg.ReverseFile != "" {
+		data, err := os.ReadFile(cfg.ReverseFile)
+		if err != nil {
+			return err
+		}
+		result, err := reverse.Reverse(string(data), b)
+		if err != nil {
+			return err
+		}
+		_, err = fmt.Fprintln(stdout, result)
+		return err
+	}
+
+	// 4. Render the string using the loaded banner
 	result, err := render.Render(cfg, b)
 	if err != nil {
 		return err

@@ -2,6 +2,7 @@ package input
 
 import (
 	"fmt"
+	"os"
 	"strings"
 
 	"ascii-art/pkg/model"
@@ -22,7 +23,15 @@ func ParseArgs(args []string) (*model.Config, error) {
 		if strings.HasPrefix(arg, "--") {
 			parts := strings.SplitN(arg, "=", 2)
 			flag := parts[0]
-			if flag == "--color" {
+			if flag == "--reverse" {
+				if len(parts) != 2 || parts[1] == "" {
+					return nil, fmt.Errorf("Usage: go run . [OPTION]\n\nEX: go run . --reverse=<fileName>")
+				}
+				if _, err := os.Stat(parts[1]); os.IsNotExist(err) {
+					return nil, fmt.Errorf("Usage: go run . [OPTION]\n\nEX: go run . --reverse=<fileName>\n\nFile not found: %s", parts[1])
+				}
+				config.ReverseFile = parts[1]
+			} else if flag == "--color" {
 				if len(parts) != 2 {
 					return nil, fmt.Errorf("Usage: go run ./cmd/ascii-art [OPTION] [STRING]\n\nEX: go run . --color=<color> <substring to be colored> \"something\"")
 				}
@@ -48,7 +57,20 @@ func ParseArgs(args []string) (*model.Config, error) {
 	}
 
 	if len(remainingArgs) == 0 {
+		if config.ReverseFile != "" {
+			return config, nil
+		}
 		return nil, fmt.Errorf("Usage: go run ./cmd/ascii-art [OPTION] [STRING] [BANNER]\n\nEX: go run . something standard")
+	}
+
+	// In reverse mode, the only optional positional arg is the banner name
+	if config.ReverseFile != "" {
+		if len(remainingArgs) == 1 && isBanner(remainingArgs[0]) {
+			config.BannerFile = remainingArgs[0]
+		} else if len(remainingArgs) > 0 {
+			return nil, fmt.Errorf("Usage: go run . [OPTION]\n\nEX: go run . --reverse=<fileName>")
+		}
+		return config, nil
 	}
 
 	// 2. Parse Positional Arguments

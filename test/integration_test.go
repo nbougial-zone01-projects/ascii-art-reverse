@@ -140,6 +140,53 @@ func TestGoldenBannerSelection(t *testing.T) {
 	}
 }
 
+// TestGoldenReverse verifies that --reverse reconstructs the original string from ASCII art files.
+func TestGoldenReverse(t *testing.T) {
+	testCases := []struct {
+		name     string
+		args     []string
+		want     string
+		wantErr  bool
+	}{
+		{name: "GT-19", args: []string{"--reverse=test/golden/hello.txt"}, want: "hello\n"},
+		{name: "GT-20", args: []string{"--reverse=test/golden/multiline.txt"}, want: "Hello\nThere\n"},
+		{name: "GT-21", args: []string{"--reverse=test/golden/shadow_hello.txt", "shadow"}, want: "hello\n"},
+		{name: "GT-22", args: []string{"--reverse=nonexistent.txt"}, wantErr: true},
+	}
+
+	for _, tc := range testCases {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+
+			args := append([]string{"run", "./cmd/ascii-art"}, tc.args...)
+			cmd := exec.Command("go", args...)
+			cmd.Dir = ".."
+			var stdout, stderr bytes.Buffer
+			cmd.Stdout = &stdout
+			cmd.Stderr = &stderr
+			err := cmd.Run()
+
+			if tc.wantErr {
+				if err == nil {
+					t.Fatalf("expected error, got none")
+				}
+				if !bytes.Contains(stderr.Bytes(), []byte("File not found")) {
+					t.Fatalf("stderr = %q, want it to contain %q", stderr.String(), "File not found")
+				}
+				return
+			}
+
+			if err != nil {
+				t.Fatalf("command failed: %v, stderr: %s", err, stderr.String())
+			}
+			if stdout.String() != tc.want {
+				t.Fatalf("output mismatch\nexpected: %q\nactual:   %q", tc.want, stdout.String())
+			}
+		})
+	}
+}
+
 // TestOutputFlag verifies that the --output flag writes to a file instead of stdout.
 func TestOutputFlag(t *testing.T) {
 	outputFile := "result.txt"

@@ -1281,3 +1281,94 @@ Milestones Update:
 - Added `Milestone 6: Reverse Feature` to `docs/milestones.md` referencing Task 10.
 
 Log Update: Appended this action to `ai.log`.
+
+Timestamp: 2026-03-02 User Request: "lets go" (Start Task 10 - Cycle 1 TDD)
+
+AI Assistant Output & Actions:
+
+Task 10 Execution (Cycle 1 - Core Reverse Logic):
+
+TDD RED:
+- Created `internal/reverse/` directory.
+- Created `internal/reverse/reverse_test.go` with `TestReverse_Simple` and `TestReverse_Empty`.
+- Confirmed RED phase: `go test ./internal/reverse/...` failed with `undefined: Reverse`.
+
+TDD GREEN:
+- Created `internal/reverse/reverse.go` implementing `Reverse`, `invertBanner`, and `decodeLine`.
+- Ran `go test ./internal/reverse/...` — FAIL: `TestReverse_Simple` returned "hello\nhello" instead of "hello".
+- Bug identified: block splitting logic double-counts the last block when `len(rows) % 9 == 8`.
+
+Log Update: Appended this action to `ai.log`.
+
+Timestamp: 2026-03-02 User Request: "its ok. dont wait until i tell you to update it. do it yourself"
+
+AI Assistant Output & Actions:
+
+Task 10 Execution (Cycle 1 - Bug Fix & GREEN):
+- Fixed block splitting bug in `internal/reverse/reverse.go`: replaced modulo-based logic with an explicit loop that skips blank separator lines after each 8-row block.
+- Ran `go test -count=1 ./internal/reverse/...` — PASS.
+- Cycle 1 complete: `TestReverse_Simple` and `TestReverse_Empty` both pass.
+
+Log Update: Appended this action to `ai.log`.
+
+Timestamp: 2026-03-02 User Request: (Cycle 2 - Multiline Reverse)
+
+AI Assistant Output & Actions:
+
+Task 10 Execution (Cycle 2 - Multiline Reverse):
+
+TDD RED:
+- Added `TestReverse_Multiline` to `internal/reverse/reverse_test.go`.
+- Input: art for "he" and "lo" as two separate 8-row blocks joined by a blank line.
+- Expected result: "he\nlo".
+
+TDD GREEN:
+- Ran `go test -count=1 -v ./internal/reverse/...` — PASS.
+- Existing block-splitting logic already handles multiline correctly. No code changes needed.
+- All 3 tests pass: TestReverse_Simple, TestReverse_Empty, TestReverse_Multiline.
+
+Log Update: Appended this action to `ai.log`.
+
+Timestamp: 2026-03-02 User Request: (Cycle 3 - Flag Parsing)
+
+AI Assistant Output & Actions:
+
+Task 10 Execution (Cycle 3 - Flag Parsing):
+
+TDD RED:
+- Added `os` and `path/filepath` imports to `internal/input/flags_test.go`.
+- Added `TestParseArgs_ReverseFlag`, `TestParseArgs_ReverseFlagMissingFile`, `TestParseArgs_ReverseFlagBadFormat`.
+- Ran `go test -count=1 ./internal/input/...` — FAIL: `got.ReverseFile undefined`.
+
+TDD GREEN:
+- Added `ReverseFile string` field to `pkg/model/config.go`.
+- Added `--reverse` flag parsing to `internal/input/flags.go` with `os.Stat` file-existence check.
+- Added early return in reverse mode to skip positional argument validation.
+- Ran `go test -count=1 -v ./internal/input/...` — PASS (all 14 tests).
+
+Log Update: Appended this action to `ai.log`.
+
+Timestamp: 2026-03-02 User Request: (Cycle 4 - Wiring & Integration Tests)
+
+AI Assistant Output & Actions:
+
+Task 10 Execution (Cycle 4 - Wiring & Integration Tests):
+
+TDD RED:
+- Added `TestGoldenReverse` to `test/integration_test.go` covering GT-19..GT-22.
+- Ran `go test -count=1 -run TestGoldenReverse ./test/...` — FAIL (reverse path not wired yet).
+
+TDD GREEN:
+- Added `ascii-art/internal/reverse` import to `cmd/ascii-art/main.go`.
+- Added reverse path in `Run()`: reads file, calls `reverse.Reverse`, prints result to stdout.
+- Fixed `internal/input/flags.go` to handle optional banner positional arg in reverse mode.
+- Ran `go test -count=1 -run TestGoldenReverse -v ./test/...` — all 4 pass (GT-19, GT-20, GT-21, GT-22).
+
+Regression Check:
+- Ran full `go test -count=1 ./test/... ./internal/...`.
+- Pre-existing golden test failures (GT-01..GT-15) confirmed to be pre-existing via `git stash` check — not caused by our changes.
+- All internal package tests pass: banner, input, output, render, reverse.
+
+Task 10 complete. All 4 TDD cycles done.
+
+Log Update: Appended this action to `ai.log`.

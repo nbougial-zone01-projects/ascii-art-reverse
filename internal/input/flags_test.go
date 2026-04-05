@@ -1,6 +1,8 @@
 package input
 
 import (
+	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -135,4 +137,51 @@ func TestParseArgs_Positional(t *testing.T) {
 			}
 		})
 	}
+}
+
+func TestParseArgs_ReverseFlag(t *testing.T) {
+	// Create a real temp file so the existence check passes
+	dir := t.TempDir()
+	path := filepath.Join(dir, "art.txt")
+	if err := os.WriteFile(path, []byte("art"), 0o644); err != nil {
+		t.Fatalf("failed to create temp file: %v", err)
+	}
+
+	got, err := ParseArgs([]string{"--reverse=" + path})
+	if err != nil {
+		t.Fatalf("ParseArgs() unexpected error: %v", err)
+	}
+	if got.ReverseFile != path {
+		t.Errorf("ReverseFile = %q, want %q", got.ReverseFile, path)
+	}
+}
+
+func TestParseArgs_ReverseFlagMissingFile(t *testing.T) {
+	_, err := ParseArgs([]string{"--reverse=nonexistent.txt"})
+	if err == nil {
+		t.Fatal("ParseArgs() expected error for missing file, got nil")
+	}
+	if !contains(err.Error(), "File not found") {
+		t.Errorf("error = %q, want it to contain %q", err.Error(), "File not found")
+	}
+}
+
+func TestParseArgs_ReverseFlagBadFormat(t *testing.T) {
+	_, err := ParseArgs([]string{"--reverse"})
+	if err == nil {
+		t.Fatal("ParseArgs() expected error for bad flag format, got nil")
+	}
+}
+
+func contains(s, substr string) bool {
+	return len(s) >= len(substr) && (s == substr || len(s) > 0 && containsHelper(s, substr))
+}
+
+func containsHelper(s, substr string) bool {
+	for i := 0; i <= len(s)-len(substr); i++ {
+		if s[i:i+len(substr)] == substr {
+			return true
+		}
+	}
+	return false
 }
