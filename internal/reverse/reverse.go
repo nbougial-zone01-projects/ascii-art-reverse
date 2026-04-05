@@ -22,6 +22,16 @@ func Reverse(art string, b model.Banner) (string, error) {
 		return "", nil
 	}
 
+	// Normalize line endings and strip trailing '$' markers (audit file convention)
+	art = strings.ReplaceAll(art, "\r\n", "\n")
+	art = strings.ReplaceAll(art, "\r", "\n")
+	rawRows := strings.Split(art, "\n")
+	cleaned := make([]string, len(rawRows))
+	for i, row := range rawRows {
+		cleaned[i] = strings.TrimRight(row, "$")
+	}
+	art = strings.Join(cleaned, "\n")
+
 	inv := invertBanner(b)
 
 	// Split into per-input-line blocks separated by a blank line between 8-row groups.
@@ -85,7 +95,7 @@ func decodeLine(rows []string, inv map[string]rune) (string, error) {
 			}
 		}
 		if !matched {
-			return "", fmt.Errorf("Usage: go run . --reverse=<fileName> [BANNER]\n\nCould not decode character at column %d.\nNote: files produced with --color or --align flags are not supported for reversal.", col)
+			return "", fmt.Errorf("Usage: go run . --reverse=<fileName> [BANNER]\n\nCould not decode character at column %d.\nEnsure the correct banner is specified (standard, shadow, thinkertoy).", col)
 		}
 	}
 
