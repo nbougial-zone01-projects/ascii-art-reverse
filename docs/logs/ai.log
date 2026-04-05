@@ -1256,3 +1256,28 @@ PRD Update (Reverse Feature):
 - Updated section 9 Risks & Mitigation to add ambiguous glyph matching risk.
 
 Log Update: Appended this action to `ai.log`.
+
+Timestamp: 2026-03-02 User Request: "now lets add some golden tests for that and create the corresponding tasks which will be TDD based as was done for previous tasks"
+
+AI Assistant Output & Actions:
+
+Golden Tests Update:
+- Updated `docs/golden_tests.md` to add GT-19 through GT-22 covering the reverse feature:
+  - GT-19: `--reverse=hello.txt` → stdout == "hello"
+  - GT-20: `--reverse=multiline.txt` → stdout == "Hello\nThere"
+  - GT-21: `--reverse=shadow_hello.txt shadow` → stdout == "hello"
+  - GT-22: `--reverse=nonexistent.txt` → stderr contains "File not found", non-zero exit
+- Added reverse-specific constraints to the Implementation Plan section.
+
+Task Creation:
+- Created `docs/tasks/task_10_reverse.md` with 4 TDD cycles:
+  - Cycle 1: Core reverse logic in `internal/reverse` (simple + empty cases).
+  - Cycle 2: Multiline reverse support.
+  - Cycle 3: `--reverse` flag parsing with file-existence check in `internal/input/flags.go`.
+  - Cycle 4: Wiring into `cmd/ascii-art/main.go` and integration golden tests GT-19..GT-22.
+- Included full file checklist and acceptance criteria.
+
+Milestones Update:
+- Added `Milestone 6: Reverse Feature` to `docs/milestones.md` referencing Task 10.
+
+Log Update: Appended this action to `ai.log`.

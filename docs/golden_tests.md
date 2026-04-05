@@ -27,6 +27,10 @@ The following test cases define the input and the expected behavior.
 | **GT-16** | `--color=red "hello"` | Color full string (ANSI) | `test/golden/color_red.txt` |
 | **GT-17** | `--color=green "l" "hello"` | Color substring (ANSI) | `test/golden/color_substring.txt` |
 | **GT-18** | `--output=test_out.txt "hello"` | File output verification | `test/golden/output_file.txt` |
+| **GT-19** | `--reverse=hello.txt` | Reverse standard banner art back to `hello` | `N/A – assert stdout == "hello"` |
+| **GT-20** | `--reverse=multiline.txt` | Reverse multiline art back to `Hello\nThere` | `N/A – assert stdout == "Hello\nThere"` |
+| **GT-21** | `--reverse=shadow_hello.txt shadow` | Reverse shadow banner art back to `hello` | `N/A – assert stdout == "hello"` |
+| **GT-22** | `--reverse=nonexistent.txt` | File does not exist – usage error | `N/A – assert stderr contains "File not found"` |
 
 ## Implementation Plan
 
@@ -37,6 +41,7 @@ The following test cases define the input and the expected behavior.
     *   **Constraint:** For Alignment tests (GT-13 to GT-15), the test runner must mock or force a terminal width of **80 columns** to ensure deterministic output.
     *   **Constraint:** For Color tests (GT-16, GT-17), the output file will contain raw ANSI escape codes.
     *   **Constraint:** For Output tests (GT-18), the verification compares the content of the *created file* against the golden file.
+    *   **Constraint:** For Reverse tests (GT-19 to GT-22), the input files are the existing golden files already in `test/golden/`. The expected output is the original string that produced them. GT-22 expects a non-zero exit code and a specific error message on stderr.
     *   Run a verified version of the code.
     *   Redirect output: `go run . "hello" > test/golden/hello.txt`.
     *   Manually inspect `hello.txt` to confirm it is correct.

@@ -43,3 +43,12 @@
 - [x] Task 07: File Output & Integration
     - Implement file writing in `main`.
     - Update integration tests for new features.
+
+## Milestone 6: Reverse Feature
+**Focus:** ASCII Art Reversal
+- [ ] Task 10: Reverse Feature
+    - Implement `--reverse=<fileName>` flag parsing with file-existence check.
+    - Implement `internal/reverse` package with core reverse logic.
+    - Wire reverse path into `cmd/ascii-art/main.go`.
+    - Add integration tests GT-19..GT-22.
+    - Full test suite passing.
